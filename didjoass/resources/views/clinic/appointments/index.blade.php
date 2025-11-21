@@ -3,10 +3,9 @@
 @section('title', 'Appointments')
 
 @section('content')
-<div class="p-6 bg-gray-100 min-h-screen">
+<div class="p-6 bg-gray-300 min-h-screen">
     <div class="max-w-7xl mx-auto">
 
-        <!-- Header -->
         <div class="mb-6">
             <h1 class="text-2xl font-bold text-gray-800">My Appointments</h1>
             <p class="text-gray-600">Track the progress of your case orders</p>
@@ -18,7 +17,6 @@
         </div>
         @endif
 
-        <!-- Summary Cards -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
             <div class="bg-white rounded-lg shadow p-6">
                 <h3 class="text-gray-500 text-sm font-medium">Total Appointments</h3>
@@ -44,7 +42,6 @@
             </div>
         </div>
 
-        <!-- Filter Tabs -->
         <div class="bg-white rounded-lg shadow mb-6">
             <div class="flex border-b">
                 <button onclick="filterAppointments('all')"
@@ -66,13 +63,11 @@
             </div>
         </div>
 
-        <!-- Appointments Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @forelse($appointments as $appointment)
             <div class="appointment-card bg-white rounded-lg shadow hover:shadow-lg transition"
                 data-status="{{ $appointment->work_status }}">
                 <div class="p-6">
-                    <!-- Header -->
                     <div class="flex justify-between items-start mb-4">
                         <div>
                             <p class="text-xs text-gray-500">Appointment #</p>
@@ -88,7 +83,6 @@
                         </span>
                     </div>
 
-                    <!-- Details -->
                     <div class="space-y-3 mb-4">
                         <div>
                             <p class="text-xs text-gray-500">Case Number</p>
@@ -119,7 +113,6 @@
                         </div>
                     </div>
 
-                    <!-- Progress Indicator -->
                     @if($appointment->work_status === 'in-progress')
                     <div class="mb-4">
                         <div class="flex justify-between text-xs text-gray-600 mb-1">
@@ -143,7 +136,6 @@
                     </div>
                     @endif
 
-                    <!-- Action Button -->
                     <div class="border-t pt-4">
                         <a href="{{ route('clinic.appointments.show', $appointment->appointment_id) }}"
                             class="block w-full text-center bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition text-sm font-medium">
@@ -163,8 +155,6 @@
             </div>
             @endforelse
         </div>
-
-        <!-- Pagination -->
         @if($appointments->hasPages())
         <div class="mt-6">
             {{ $appointments->links() }}
@@ -178,7 +168,6 @@
     const cards = document.querySelectorAll('.appointment-card');
     const tabs = document.querySelectorAll('.filter-tab');
     
-    // Update tab styles
     tabs.forEach(tab => {
         tab.classList.remove('border-blue-600', 'text-blue-600');
         tab.classList.add('border-transparent', 'text-gray-600');
@@ -186,7 +175,6 @@
     event.target.classList.add('border-blue-600', 'text-blue-600');
     event.target.classList.remove('border-transparent');
     
-    // Filter cards
     cards.forEach(card => {
         if (status === 'all' || card.dataset.status === status) {
             card.style.display = '';

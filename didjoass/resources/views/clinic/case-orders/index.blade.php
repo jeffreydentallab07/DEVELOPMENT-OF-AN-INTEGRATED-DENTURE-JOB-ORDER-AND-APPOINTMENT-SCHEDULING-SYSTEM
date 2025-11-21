@@ -7,7 +7,7 @@
     <div class="max-w-full mx-auto sm:px-6 lg:px-8">
 
         <div class="mb-6 flex justify-between items-center">
-            <h1 class="text-3xl font-bold text-gray-800">📋 Case Orders</h1>
+            <h1 class="text-3xl font-bold text-gray-800">Case Orders</h1>
             <a href="{{ route('clinic.case-orders.create') }}"
                 class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition">
                 + New Case Order
@@ -26,21 +26,17 @@
         </div>
         @endif
 
-        <!-- Filters -->
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
             <div class="p-6">
                 <form method="GET" action="{{ route('clinic.case-orders.index') }}"
                     class="grid grid-cols-1 md:grid-cols-3 gap-4">
 
-                    <!-- Search -->
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Search</label>
                         <input type="text" name="search" value="{{ request('search') }}"
                             placeholder="Search by ID, type, or patient..."
                             class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500">
                     </div>
-
-                    <!-- Status Filter -->
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
                         <select name="status"
@@ -61,11 +57,10 @@
                         </select>
                     </div>
 
-                    <!-- Action Buttons -->
                     <div class="flex items-end gap-2">
                         <button type="submit"
                             class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition">
-                            🔍 Filter
+                            Filter
                         </button>
                         <a href="{{ route('clinic.case-orders.index') }}"
                             class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg transition">
@@ -77,28 +72,27 @@
             </div>
         </div>
 
-        <!-- Case Orders Table -->
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="overflow-x-auto">
                 <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50">
+                    <thead class="bg-blue-900">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                                 Case ID</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                                 Patient</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                                 Dentist</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                                 Type</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                                 Status</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                                 Technician</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                                 Created</th>
                             <th
-                                class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                class="px-6 py-3 text-center text-xs font-medium text-white uppercase tracking-wider">
                                 Actions</th>
                         </tr>
                     </thead>

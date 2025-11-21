@@ -3,10 +3,9 @@
 @section('page-title', 'Edit Case Order')
 
 @section('content')
-<div class="py-12">
+<div class="p-6 bg-gray-300 min-h-screen">
     <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
 
-        <!-- Header -->
         <div class="mb-6 flex items-center">
             <a href="{{ route('clinic.case-orders.show', $caseOrder->co_id) }}"
                 class="mr-4 text-gray-600 hover:text-gray-900">
@@ -24,7 +23,6 @@
                     @csrf
                     @method('PUT')
 
-                    <!-- Patient Selection -->
                     <div class="mb-6">
                         <label class="block text-sm font-semibold text-gray-700 mb-2">
                             Patient <span class="text-red-500">*</span>

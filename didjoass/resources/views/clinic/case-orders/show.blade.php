@@ -3,10 +3,9 @@
 @section('page-title', 'Case Order Details')
 
 @section('content')
-<div class="py-12">
+<div class="p-6 bg-gray-300 min-h-screen">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
-        <!-- Header -->
         <div class="mb-6 flex justify-between items-center">
             <div class="flex items-center">
                 <a href="{{ route('clinic.case-orders.index') }}" class="mr-4 text-gray-600 hover:text-gray-900">
