@@ -3,7 +3,7 @@
 @section('page-title', 'Case Orders')
 
 @section('content')
-<div class="p-6 bg-gray-300 min-h-screen">
+<div class="p-6 bg-gray-200 min-h-screen">
     <div class="max-w-full mx-auto sm:px-6 lg:px-8">
 
         <div class="mb-6 flex justify-between items-center">
@@ -50,7 +50,7 @@
                                 Review</option>
                             <option value="adjustment requested" {{ request('status')=='adjustment requested'
                                 ? 'selected' : '' }}>Adjustment Requested</option>
-                            <option value="revision in progress" {{ request('status')=='revision in progress'
+                            <option value="revision in progress" {{ requeswhitet('status')=='revision in progress'
                                 ? 'selected' : '' }}>Revision in Progress</option>
                             <option value="completed" {{ request('status')=='completed' ? 'selected' : '' }}>Completed
                             </option>
@@ -59,7 +59,7 @@
 
                     <div class="flex items-end gap-2">
                         <button type="submit"
-                            class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition">
+                            class="bg-blue-600 hover:bg-blue-700 text- font-bold py-2 px-6 rounded-lg transition">
                             Filter
                         </button>
                         <a href="{{ route('clinic.case-orders.index') }}"
