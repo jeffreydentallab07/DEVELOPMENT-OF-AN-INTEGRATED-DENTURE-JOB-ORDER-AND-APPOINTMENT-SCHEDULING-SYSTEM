@@ -138,38 +138,70 @@
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm text-gray-900">{{ $caseOrder->created_at->format('M j, Y') }}</div>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
-                                <a href="{{ route('clinic.case-orders.show', $caseOrder->co_id) }}"
-                                    class="text-blue-600 hover:text-blue-900 mr-3">
-                                    View
-                                </a>
+                           <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
+    <div class="flex items-center justify-center space-x-3">
 
-                                @if($caseOrder->status === 'under review')
-                                <a href="{{ route('clinic.case-orders.review', $caseOrder->co_id) }}"
-                                    class="text-purple-600 hover:text-purple-900 mr-3">
-                                    Review
-                                </a>
-                                @endif
+        <!-- VIEW -->
+        <a href="{{ route('clinic.case-orders.show', $caseOrder->co_id) }}"
+            class="relative group text-blue-600 hover:text-blue-900">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
+                class="w-5 h-5">
+                <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z" />
+                <path fill-rule="evenodd"
+                    d="M1.38 8.28a.87.87 0 0 1 0-.566 7.003 7.003 0 0 1 13.238.006.87.87 0 0 1 0 .566A7.003 7.003 0 0 1 1.379 8.28ZM11 8a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                    clip-rule="evenodd" />
+            </svg>
+        </a>
 
-                                @if(in_array($caseOrder->status, ['pending', 'adjustment requested']))
-                                <a href="{{ route('clinic.case-orders.edit', $caseOrder->co_id) }}"
-                                    class="text-green-600 hover:text-green-900 mr-3">
-                                    Edit
-                                </a>
-                                @endif
+        <!-- REVIEW -->
+        @if($caseOrder->status === 'under review')
+        <a href="{{ route('clinic.case-orders.review', $caseOrder->co_id) }}"
+            class="relative group text-purple-600 hover:text-purple-900">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
+                class="w-5 h-5">
+                <path
+                    d="M13.488 2.513a1.75 1.75 0 0 0-2.475 0L6.75 6.774a2.75 2.75 0 0 0-.596.892l-.848 2.047a.75.75 0 0 0 .98.98l2.047-.848a2.75 2.75 0 0 0 .892-.596l4.261-4.262a1.75 1.75 0 0 0 0-2.474Z" />
+                <path
+                    d="M4.75 3.5c-.69 0-1.25.56-1.25 1.25v6.5c0 .69.56 1.25 1.25 1.25h6.5c.69 0 1.25-.56 1.25-1.25V9A.75.75 0 0 1 14 9v2.25A2.75 2.75 0 0 1 11.25 14h-6.5A2.75 2.75 0 0 1 2 11.25v-6.5A2.75 2.75 0 0 1 4.75 2H7a.75.75 0 0 1 0 1.5H4.75Z" />
+            </svg>
+        </a>
+        @endif
 
-                                @if($caseOrder->status === 'pending')
-                                <form action="{{ route('clinic.case-orders.destroy', $caseOrder->co_id) }}"
-                                    method="POST" class="inline-block"
-                                    onsubmit="return confirm('Are you sure you want to delete this case order?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="text-red-600 hover:text-red-900">
-                                        Delete
-                                    </button>
-                                </form>
-                                @endif
-                            </td>
+        <!-- EDIT -->
+        @if(in_array($caseOrder->status, ['pending', 'adjustment requested']))
+        <a href="{{ route('clinic.case-orders.edit', $caseOrder->co_id) }}"
+            class="relative group text-green-600 hover:text-green-900">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
+                class="w-5 h-5">
+                <path
+                    d="M13.488 2.513a1.75 1.75 0 0 0-2.475 0L6.75 6.774a2.75 2.75 0 0 0-.596.892l-.848 2.047a.75.75 0 0 0 .99.98l2.047-.848a2.75 2.75 0 0 0 .892-.596l4.261-4.262a1.75 1.75 0 0 0 0-2.474Z" />
+                <path
+                    d="M4.75 3.5c-.69 0-1.25.56-1.25 1.25v6.5c0 .69.56 1.25 1.25 1.25h6.5c.69 0 1.25-.56 1.25-1.25V9A.75.75 0 0 1 14 9v2.25A2.75 2.75 0 0 1 11.25 14h-6.5A2.75 2.75 0 0 1 2 11.25v-6.5A2.75 2.75 0 0 1 4.75 2H7a.75.75 0 0 1 0 1.5H4.75Z" />
+            </svg>
+        </a>
+        @endif
+
+        <!-- DELETE -->
+        @if($caseOrder->status === 'pending')
+        <form action="{{ route('clinic.case-orders.destroy', $caseOrder->co_id) }}" method="POST"
+            class="inline-block"
+            onsubmit="return confirm('Are you sure you want to delete this case order?');">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="text-red-600 hover:text-red-900">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
+                    class="w-5 h-5">
+                    <path fill-rule="evenodd"
+                        d="M5 3.25V4H2.75a.75.75 0 0 0 0 1.5h.3l.815 8.15A1.5 1.5 0 0 0 5.357 15h5.285a1.5 1.5 0 0 0 1.493-1.35l.815-8.15h.3a.75.75 0 0 0 0-1.5H11v-.75A2.25 2.25 0 0 0 8.75 1h-1.5A2.25 2.25 0 0 0 5 3.25Zm2.25-.75a.75.75 0 0 0-.75.75V4h3v-.75a.75.75 0 0 0-.75-.75h-1.5ZM6.05 6a.75.75 0 0 1 .787.713l.275 5.5a.75.75 0 0 1-1.498.075l-.275-5.5A.75.75 0 0 1 6.05 6Zm3.9 0a.75.75 0 0 1 .712.787l-.275 5.5a.75.75 0 0 1-1.498-.075l.275-5.5a.75.75 0 0 1 .786-.711Z"
+                        clip-rule="evenodd" />
+                </svg>
+            </button>
+        </form>
+        @endif
+
+    </div>
+</td>
+
                         </tr>
                         @empty
                         <tr>
