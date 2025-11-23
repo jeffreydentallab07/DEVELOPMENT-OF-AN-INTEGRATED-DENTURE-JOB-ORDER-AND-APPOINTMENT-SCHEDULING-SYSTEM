@@ -60,12 +60,25 @@
                     <td class="px-6 py-3 text-xs text-gray-500">
                         {{ $caseOrder->created_at->format('M d, Y') }}
                     </td>
-                    <td class="px-6 py-3 text-center">
-                        <a href="{{ route('admin.case-orders.show', $caseOrder->co_id) }}"
-                            class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition text-xs">
-                            View Details
-                        </a>
-                    </td>
+                   <td class="px-6 py-3 text-center">
+    <a href="{{ route('admin.case-orders.show', $caseOrder->co_id) }}"
+        class="group relative inline-flex items-center justify-center bg-blue-600 text-white p-2 rounded hover:bg-blue-700 transition">
+
+       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
+                                    class="w-4 h-4">
+                                    <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z" />
+                                    <path fill-rule="evenodd"
+                                        d="M1.38 8.28a.87.87 0 0 1 0-.566 7.003 7.003 0 0 1 13.238.006.87.87 0 0 1 0 .566A7.003 7.003 0 0 1 1.379 8.28ZM11 8a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                                        clip-rule="evenodd" />
+                                </svg>
+
+        <span
+            class="absolute left-1/2 -bottom-8 -translate-x-1/2 whitespace-nowrap bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition pointer-events-none">
+            View Details
+        </span>
+    </a>
+</td>
+
                 </tr>
                 @empty
                 <tr>

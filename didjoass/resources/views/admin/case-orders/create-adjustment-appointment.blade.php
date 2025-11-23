@@ -3,10 +3,9 @@
 @section('page-title', 'Schedule Adjustment')
 
 @section('content')
-<div class="py-12">
+<div class="p-6 bg-gray-300 min-h-screen">
     <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
 
-        <!-- Header -->
         <div class="mb-6 flex items-center">
             <a href="{{ route('admin.case-orders.show', $caseOrder->co_id) }}"
                 class="mr-4 text-gray-600 hover:text-gray-900">
@@ -17,7 +16,6 @@
             </h1>
         </div>
 
-        <!-- Case Info Alert -->
         <div class="mb-6 bg-orange-50 border-l-4 border-orange-400 p-4">
             <div class="flex">
                 <div class="flex-shrink-0">
@@ -40,7 +38,6 @@
             </div>
         </div>
 
-        <!-- Case Details -->
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
             <div class="p-6">
                 <h3 class="text-lg font-semibold mb-4">Case Order Details</h3>
@@ -69,7 +66,6 @@
             </div>
         </div>
 
-        <!-- Form -->
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-8">
 
@@ -84,7 +80,6 @@
                         Pickup Information
                     </h3>
 
-                    <!-- Rider Selection -->
                     <div class="mb-6">
                         <label class="block text-sm font-medium text-gray-700 mb-2">
                             Assign Rider <span class="text-red-500">*</span>
@@ -103,7 +98,6 @@
                         @enderror
                     </div>
 
-                    <!-- Pickup Date -->
                     <div class="mb-6">
                         <label class="block text-sm font-medium text-gray-700 mb-2">
                             Pickup Date <span class="text-red-500">*</span>
@@ -116,7 +110,6 @@
                         @enderror
                     </div>
 
-                    <!-- Pickup Notes -->
                     <div class="mb-8">
                         <label class="block text-sm font-medium text-gray-700 mb-2">
                             Pickup Notes
@@ -138,7 +131,6 @@
                         Appointment Information
                     </h3>
 
-                    <!-- Technician Selection -->
                     <div class="mb-6">
                         <label class="block text-sm font-medium text-gray-700 mb-2">
                             Assign Technician <span class="text-red-500">*</span>
@@ -158,7 +150,6 @@
                         @enderror
                     </div>
 
-                    <!-- Schedule DateTime -->
                     <div class="mb-6">
                         <label class="block text-sm font-medium text-gray-700 mb-2">
                             Schedule Date & Time <span class="text-red-500">*</span>
@@ -172,7 +163,6 @@
                         <p class="text-gray-500 text-xs mt-1">Schedule should be after the pickup date</p>
                     </div>
 
-                    <!-- Purpose -->
                     <div class="mb-6">
                         <label class="block text-sm font-medium text-gray-700 mb-2">
                             Purpose / Work Description
@@ -184,7 +174,6 @@
                         @enderror
                     </div>
 
-                    <!-- Info Box -->
                     <div class="mb-6 bg-blue-50 border-l-4 border-blue-400 p-4">
                         <div class="flex">
                             <div class="flex-shrink-0">
@@ -203,7 +192,6 @@
                         </div>
                     </div>
 
-                    <!-- Action Buttons -->
                     <div class="flex justify-end gap-4">
                         <a href="{{ route('admin.case-orders.show', $caseOrder->co_id) }}"
                             class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition">

@@ -3,10 +3,9 @@
 @section('page-title', 'Create Delivery')
 
 @section('content')
-<div class="py-12">
+<div class="p-6 space-y-6 bg-gray-300 min-h-screen">
     <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
 
-        <!-- Header -->
         <div class="mb-6 flex items-center">
             <a href="{{ route('admin.case-orders.show', $caseOrder->co_id) }}"
                 class="mr-4 text-gray-600 hover:text-gray-900">
@@ -17,7 +16,6 @@
             </h1>
         </div>
 
-        <!-- Info Alert -->
         <div class="mb-6 bg-green-50 border-l-4 border-green-400 p-4">
             <div class="flex">
                 <div class="flex-shrink-0">
@@ -36,7 +34,6 @@
             </div>
         </div>
 
-        <!-- Case Details -->
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
             <div class="p-6">
                 <h3 class="text-lg font-semibold mb-4">Case Order Details</h3>
@@ -51,20 +48,28 @@
                     </div>
                     <div class="col-span-2">
                         <p class="text-gray-500">Delivery Address</p>
-                        <p class="font-medium">📍 {{ $caseOrder->clinic->address }}</p>
+                        <p class="flex items-center font-medium">
+
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 mr-2">
+        <path fill-rule="evenodd" 
+              d="m7.539 14.841.003.003.002.002a.755.755 0 0 0 .912 0l.002-.002.003-.003.012-.009a5.57 5.57 0 0 0 .19-.153 15.588 15.588 0 0 0 2.046-2.082c1.101-1.362 2.291-3.342 2.291-5.597A5 5 0 0 0 3 7c0 2.255 1.19 4.235 2.292 5.597a15.591 15.591 0 0 0 2.046 2.082 8.916 8.916 0 0 0 .189.153l.012.01ZM8 8.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z" 
+              clip-rule="evenodd" />
+    </svg>
+
+    <span>{{ $caseOrder->clinic->address }}</span>
+</p>
+
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Form -->
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-8">
 
                 <form action="{{ route('admin.case-orders.store-delivery', $caseOrder->co_id) }}" method="POST">
                     @csrf
 
-                    <!-- Rider Selection -->
                     <div class="mb-6">
                         <label class="block text-sm font-medium text-gray-700 mb-2">
                             Assign Rider <span class="text-red-500">*</span>
@@ -83,7 +88,6 @@
                         @enderror
                     </div>
 
-                    <!-- Delivery Date -->
                     <div class="mb-6">
                         <label class="block text-sm font-medium text-gray-700 mb-2">
                             Delivery Date <span class="text-red-500">*</span>
@@ -96,19 +100,7 @@
                         @enderror
                     </div>
 
-                    <!-- Notes -->
-                    <div class="mb-6">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">
-                            Notes / Instructions
-                        </label>
-                        <textarea name="notes" rows="3" placeholder="Any special instructions for the rider..."
-                            class="w-full p-3 border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500">{{ old('notes') }}</textarea>
-                        @error('notes')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <!-- Action Buttons -->
+                  
                     <div class="flex justify-end gap-4">
                         <a href="{{ route('admin.case-orders.show', $caseOrder->co_id) }}"
                             class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition">

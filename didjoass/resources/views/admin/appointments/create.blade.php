@@ -26,7 +26,6 @@
             <form action="{{ route('admin.appointments.store') }}" method="POST" class="space-y-6">
                 @csrf
 
-                <!-- Case Order Selection -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">
                         Case Order <span class="text-red-500">*</span>

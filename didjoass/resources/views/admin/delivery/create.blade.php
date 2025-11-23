@@ -3,7 +3,7 @@
 @section('page-title', 'Create Delivery')
 
 @section('content')
-<div class="p-6 bg-gray-100 min-h-screen">
+<div class="p-6 bg-gray-300 min-h-screen">
     <div class="max-w-4xl mx-auto">
 
         <a href="{{ route('admin.delivery.index') }}" class="text-blue-600 hover:underline mb-4 inline-block">
@@ -25,15 +25,12 @@
 
             <form action="{{ route('admin.delivery.store') }}" method="POST" class="space-y-6">
                 @csrf
-
-                <!-- Appointment Selection -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">
                         Select Completed Case <span class="text-red-500">*</span>
                     </label>
 
                     @if($appointment)
-                    <!-- Pre-selected appointment -->
                     <div class="border-2 border-green-500 rounded-lg p-4 bg-green-50">
                         <div class="flex items-center justify-between mb-3">
                             <div>
@@ -69,7 +66,6 @@
                     </div>
                     <input type="hidden" name="appointment_id" value="{{ $appointment->appointment_id }}">
                     @else
-                    <!-- Dropdown selection -->
                     <select name="appointment_id" id="appointmentSelect" required
                         class="w-full border-2 border-gray-300 rounded-lg p-3 focus:border-blue-500 focus:outline-none"
                         onchange="updateAppointmentDetails()">
@@ -86,7 +82,6 @@
                         @endforeach
                     </select>
 
-                    <!-- Appointment Preview -->
                     <div id="appointmentPreview" class="hidden mt-3 p-4 bg-gray-50 rounded-lg border">
                         <div class="grid grid-cols-2 gap-3 text-sm">
                             <div>
@@ -110,7 +105,6 @@
                     @endif
                 </div>
 
-                <!-- Rider Selection -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">
                         Assign Rider <span class="text-red-500">*</span>
@@ -128,7 +122,6 @@
                     </p>
                 </div>
 
-                <!-- Delivery Date -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">
                         Scheduled Delivery Date (Optional)
@@ -139,7 +132,6 @@
                     <p class="text-xs text-gray-500 mt-1">If not specified, delivery will be scheduled for tomorrow.</p>
                 </div>
 
-                <!-- Notes -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">
                         Delivery Notes (Optional)
@@ -149,7 +141,6 @@
                         placeholder="Special instructions for delivery..."></textarea>
                 </div>
 
-                <!-- Info Box -->
                 {{-- <div class="bg-orange-50 border-l-4 border-orange-500 p-4">
                     <div class="flex items-start">
                         <svg class="w-5 h-5 text-orange-500 mt-0.5 mr-3" fill="currentColor" viewBox="0 0 20 20">
@@ -169,7 +160,6 @@
                     </div>
                 </div> --}}
 
-                <!-- Action Buttons -->
                 <div class="flex justify-end gap-3 pt-4 border-t">
                     <a href="{{ route('admin.delivery.index') }}"
                         class="px-6 py-3 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition">

@@ -3,19 +3,17 @@
 @section('page-title', 'Dentist List')
 
 @section('content')
-<div class="py-12">
+<div class="p-6 bg-gray-300 min-h-screen">
   <div class="max-w-full mx-auto sm:px-6 lg:px-8">
 
-    <!-- Header -->
     <div class="mb-6 flex justify-between items-center">
-      <h1 class="text-3xl font-bold text-gray-800">🦷 Dentists</h1>
+      <h1 class="text-3xl font-bold text-gray-800">Dentists</h1>
       <button id="openAddDentistModal"
         class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition">
         + Add Dentist
       </button>
     </div>
 
-    <!-- Success/Error Messages -->
     @if(session('success'))
     <div class="mb-6 bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded">
       {{ session('success') }}
@@ -28,12 +26,10 @@
     </div>
     @endif
 
-    <!-- Search/Filter Section -->
     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
       <div class="p-6">
         <form method="GET" action="{{ route('clinic.dentists.index') }}" class="grid grid-cols-1 md:grid-cols-3 gap-4">
 
-          <!-- Search -->
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">Search</label>
             <input type="text" name="search" value="{{ request('search') }}"
@@ -41,14 +37,12 @@
               class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 p-3">
           </div>
 
-          <!-- Placeholder for additional filter -->
           <div></div>
 
-          <!-- Action Buttons -->
           <div class="flex items-end gap-2">
             <button type="submit"
               class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition">
-              🔍 Filter
+             Filter
             </button>
             <a href="{{ route('clinic.dentists.index') }}"
               class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg transition">
@@ -60,23 +54,22 @@
       </div>
     </div>
 
-    <!-- Dentists Table -->
-    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+    <div class="bg-blue-900 overflow-hidden shadow-sm sm:rounded-lg">
       <div class="overflow-x-auto">
         <table class="min-w-full divide-y divide-gray-200">
-          <thead class="bg-gray-50">
+          <thead class="bg-Blue-900">
             <tr>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                 Photo</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                 Full Name</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                 Email</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                 Contact</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                 Address</th>
-              <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th class="px-6 py-3 text-center text-xs font-medium text-white uppercase tracking-wider">
                 Actions</th>
             </tr>
           </thead>
@@ -134,7 +127,6 @@
         </table>
       </div>
 
-      <!-- Pagination -->
       @if($dentists->hasPages())
       <div class="px-6 py-4 border-t">
         {{ $dentists->links() }}
@@ -145,12 +137,10 @@
   </div>
 </div>
 
-<!-- Add Dentist Modal -->
 <div id="addDentistModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
   <div class="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
 
-    <!-- Header -->
-    <div class="px-6 py-5 border-b border-gray-200 bg-gradient-to-r from-blue-600 to-blue-700">
+    <div class="px-6 py-5 border-b border-gray-200 bg-gradient-to-r from-blue-800 to-blue-900">
       <div class="flex items-center justify-between">
         <div class="flex items-center space-x-4">
           <div class="relative">
@@ -180,7 +170,6 @@
       </div>
     </div>
 
-    <!-- Form -->
     <form id="addDentistForm" action="{{ route('clinic.dentists.store') }}" method="POST" enctype="multipart/form-data"
       class="p-8 space-y-6">
       @csrf
@@ -213,7 +202,6 @@
       </div>
     </form>
 
-    <!-- Footer -->
     <div class="px-8 py-5 bg-gray-50 border-t border-gray-200 flex justify-end gap-3 rounded-b-xl">
       <button id="cancelAddDentist"
         class="px-6 py-2.5 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 font-medium transition">
@@ -227,13 +215,11 @@
   </div>
 </div>
 
-<!-- Edit Dentist Modal -->
 <div id="editDentistModal"
   class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
   <div class="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
 
-    <!-- Header -->
-    <div class="px-6 py-5 border-b border-gray-200 bg-gradient-to-r from-blue-600 to-blue-700">
+    <div class="px-6 py-5 border-b border-gray-200 bg-gradient-to-r from-blue-800 to-blue-900">
       <div class="flex items-center justify-between">
         <div class="flex items-center space-x-4">
           <div class="relative">
@@ -263,7 +249,6 @@
       </div>
     </div>
 
-    <!-- Form -->
     <form id="editDentistForm" method="POST" enctype="multipart/form-data" class="p-8 space-y-6">
       @csrf
       @method('PUT')
@@ -296,7 +281,6 @@
       </div>
     </form>
 
-    <!-- Footer -->
     <div class="px-8 py-5 bg-gray-50 border-t border-gray-200 flex justify-end gap-3 rounded-b-xl">
       <button onclick="closeEditDentistModal()"
         class="px-6 py-2.5 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 font-medium transition">
@@ -310,7 +294,6 @@
   </div>
 </div>
 
-<!-- Delete Dentist Modal -->
 <div id="deleteDentistModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
   <div class="bg-white rounded-xl shadow-2xl w-full max-w-md p-6">
     <div class="flex items-center justify-center w-12 h-12 mx-auto mb-4 bg-red-100 rounded-full">

@@ -20,9 +20,8 @@
     </style>
 </head>
 
-<body class="bg-gray-50 p-8">
+<body class="bg-gray-300 p-8">
 
-    <!-- Print Buttons -->
     <div class="no-print max-w-4xl mx-auto mb-4 flex justify-end gap-3">
         <button onclick="window.print()"
             class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition flex items-center gap-2">
@@ -38,18 +37,17 @@
         </button>
     </div>
 
-    <!-- Invoice Container -->
     <div class="max-w-4xl mx-auto bg-white shadow-lg">
 
-        <!-- Header -->
         <div class="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-8">
             <div class="flex justify-between items-start">
                 <div>
                     <img src="{{ asset('images/logo2.png') }}" alt="Jeffrey Dental Lab" class="h-16 mb-3">
                     <h1 class="text-3xl font-bold">Jeffrey Dental Laboratory</h1>
                     <p class="text-blue-100 text-sm mt-2">Cagayan de Oro City, Philippines</p>
-                    <p class="text-blue-100 text-sm">Contact: +63 XXX XXX XXXX</p>
-                    <p class="text-blue-100 text-sm">Email: info@jeffreydentallab.com</p>
+                    <p class="text-blue-100 text-sm">Contact: 09067732353</p>
+                    <p class="text-blue-100 text-sm">Email: jeffreydentallab07@gmail.com
+.com</p>
                 </div>
                 <div class="text-right">
                     <h2 class="text-2xl font-bold">INVOICE</h2>
@@ -61,7 +59,6 @@
             </div>
         </div>
 
-        <!-- Bill To & Payment Info -->
         <div class="p-8 grid grid-cols-2 gap-8 border-b-2">
             <div>
                 <h3 class="text-sm font-bold text-gray-600 uppercase mb-3">Bill To:</h3>
@@ -104,7 +101,6 @@
             </div>
         </div>
 
-        <!-- Case Details -->
         <div class="p-8 border-b-2 bg-gray-50">
             <h3 class="text-sm font-bold text-gray-600 uppercase mb-3">Case Details:</h3>
             <div class="grid grid-cols-3 gap-4 text-sm">
@@ -123,7 +119,6 @@
             </div>
         </div>
 
-        <!-- Materials & Services -->
         <div class="p-8">
             <h3 class="text-sm font-bold text-gray-600 uppercase mb-4">Materials & Services:</h3>
 
@@ -171,7 +166,6 @@
             </table>
         </div>
 
-        <!-- Totals -->
         <div class="px-8 pb-8">
             <div class="flex justify-end">
                 <div class="w-80">
@@ -196,7 +190,6 @@
             </div>
         </div>
 
-        <!-- Notes -->
         @if($billing->notes)
         <div class="px-8 pb-8 border-t-2">
             <h3 class="text-sm font-bold text-gray-600 uppercase mb-3 mt-4">Notes:</h3>
@@ -204,7 +197,6 @@
         </div>
         @endif
 
-        <!-- Payment Terms & Footer -->
         <div class="bg-gray-100 p-8 text-sm text-gray-600">
             <h3 class="font-bold text-gray-800 mb-3">Payment Terms:</h3>
             <ul class="space-y-1 list-disc list-inside">
@@ -215,7 +207,7 @@
 
             <div class="mt-6 pt-6 border-t border-gray-300 text-center">
                 <p class="font-semibold text-gray-800">Thank you for your business!</p>
-                <p class="text-xs mt-2">For inquiries, please contact us at info@jeffreydentallab.com</p>
+                <p class="text-xs mt-2">For inquiries, please contact us at jeffreydentallab07@gmail.com</p>
             </div>
         </div>
 

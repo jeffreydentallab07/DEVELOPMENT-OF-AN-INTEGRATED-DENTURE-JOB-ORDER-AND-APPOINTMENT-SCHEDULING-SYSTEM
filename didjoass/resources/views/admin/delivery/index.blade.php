@@ -5,7 +5,6 @@
 @section('content')
 <div class="p-6 space-y-6 bg-gray-300 min-h-screen">
 
-    <!-- Header -->
     <div class="flex justify-between items-center">
         <div>
             <h1 class="text-2xl font-bold text-gray-800">Delivery Management</h1>
@@ -23,7 +22,6 @@
     </div>
     @endif
 
-    <!-- Filter Tabs -->
     <div class="bg-white rounded-lg shadow">
         <div class="flex border-b">
             <button onclick="filterDeliveries('all')"
@@ -45,7 +43,6 @@
         </div>
     </div>
 
-    <!-- Delivery Table -->
     <div class="overflow-x-auto rounded-xl shadow-lg">
         <table class="min-w-full bg-white">
             <thead>
@@ -94,8 +91,18 @@
                     </td>
                     <td class="px-6 py-3">
                         <a href="{{ route('admin.delivery.show', $delivery->delivery_id) }}"
-                            class="text-blue-600 hover:underline text-sm">
-                            View Details
+                           class="group relative inline-flex items-center justify-center bg-blue-600 text-white p-2 rounded hover:bg-blue-700 transition">
+
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
+                                    class="w-4 h-4">
+                                    <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z" />
+                                    <path fill-rule="evenodd"
+                                        d="M1.38 8.28a.87.87 0 0 1 0-.566 7.003 7.003 0 0 1 13.238.006.87.87 0 0 1 0 .566A7.003 7.003 0 0 1 1.379 8.28ZM11 8a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                                        clip-rule="evenodd" />
+                                </svg> <span
+        class="absolute left-1/2 -bottom-8 -translate-x-1/2 whitespace-nowrap bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition pointer-events-none">
+        View Details
+    </span>
                         </a>
                     </td>
                 </tr>
@@ -108,7 +115,6 @@
         </table>
     </div>
 
-    <!-- Pagination -->
     <div class="mt-4">
         {{ $deliveries->links() }}
     </div>
@@ -119,7 +125,6 @@
     const rows = document.querySelectorAll('.delivery-row');
     const tabs = document.querySelectorAll('.filter-tab');
     
-    // Update tab styles
     tabs.forEach(tab => {
         tab.classList.remove('border-orange-600', 'text-orange-600');
         tab.classList.add('border-transparent', 'text-gray-600');
@@ -127,7 +132,6 @@
     event.target.classList.add('border-orange-600', 'text-orange-600');
     event.target.classList.remove('border-transparent', 'text-gray-600');
     
-    // Filter rows
     rows.forEach(row => {
         if (status === 'all' || row.dataset.status === status) {
             row.style.display = '';

@@ -5,7 +5,6 @@
 @section('content')
 <main class="flex-1 p-6 overflow-y-auto">
 
-    <!-- Success Toast -->
     @if(session('success'))
     <div id="toast-success"
         class="fixed top-5 right-5 flex items-center w-full max-w-xs p-4 mb-4 text-gray-700 bg-green-100 rounded-lg shadow-lg z-50 transition-all transform translate-x-0">
@@ -18,7 +17,6 @@
     </div>
     @endif
 
-    <!-- Error Toast -->
     @if(session('error'))
     <div id="toast-error"
         class="fixed top-5 right-5 flex items-center w-full max-w-xs p-4 mb-4 text-gray-700 bg-red-100 rounded-lg shadow-lg z-50 transition-all transform translate-x-0">
@@ -36,7 +34,6 @@
             id="technicianForm" novalidate enctype="multipart/form-data">
             @csrf
 
-            <!-- Name -->
             <div>
                 <label for="name" class="block font-medium mb-1">Full Name <span class="text-red-500">*</span></label>
                 <input type="text" id="name" name="name" value="{{ old('name') }}" pattern="^[A-Za-z\s.\-]+$"
@@ -47,7 +44,6 @@
                 </small>
             </div>
 
-            <!-- Contact Number -->
             <div>
                 <label for="contact_number" class="block text-sm font-medium mb-1">
                     Contact Number <span class="text-red-500">*</span>

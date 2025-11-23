@@ -3,10 +3,9 @@
 @section('page-title', 'Case Order Details')
 
 @section('content')
-<div class="py-12">
+<div class="p-6 space-y-6 bg-gray-300 min-h-screen">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
-        <!-- Header -->
         <div class="mb-6 flex justify-between items-center">
             <div class="flex items-center">
                 <a href="{{ route('admin.case-orders.index') }}" class="mr-4 text-gray-600 hover:text-gray-900">
@@ -17,7 +16,6 @@
                 </h1>
             </div>
 
-            <!-- Status Badge -->
             <div>
                 @php
                 $statusColors = [
@@ -48,7 +46,6 @@
         </div>
         @endif
 
-        <!-- Action Alert for Pending Orders -->
         @if($caseOrder->status === 'pending')
         <div class="mb-6 bg-yellow-50 border-l-4 border-yellow-400 p-4">
             <div class="flex">
@@ -69,7 +66,6 @@
         </div>
         @endif
 
-        <!-- Action Alert for Pickup Completed -->
         @if($caseOrder->latestPickup && $caseOrder->latestPickup->status === 'picked up' &&
         (!$caseOrder->latestAppointment || $caseOrder->latestAppointment->work_status === 'completed'))
         <div class="mb-6 bg-blue-50 border-l-4 border-blue-400 p-4">
@@ -91,7 +87,6 @@
         </div>
         @endif
 
-        <!-- Action Alert for Work Completed -->
         @if($caseOrder->latestAppointment && $caseOrder->latestAppointment->work_status === 'completed' &&
         !$caseOrder->latestAppointment->delivery)
         <div class="mb-6 bg-green-50 border-l-4 border-green-400 p-4">
@@ -113,7 +108,6 @@
         </div>
         @endif
 
-        <!-- Action Alert for Adjustment Requested -->
         @if($caseOrder->status === 'adjustment requested')
         <div class="mb-6 bg-orange-50 border-l-4 border-orange-400 p-4">
             <div class="flex">
@@ -136,10 +130,8 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-            <!-- Main Content -->
             <div class="lg:col-span-2 space-y-6">
 
-                <!-- Case Details Card -->
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6">
                         <h3 class="text-lg font-semibold mb-4 flex items-center">
@@ -191,7 +183,6 @@
                     </div>
                 </div>
 
-                <!-- Clinic, Patient & Dentist Card -->
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6">
                         <h3 class="text-lg font-semibold mb-4 flex items-center">
@@ -203,7 +194,6 @@
                             Clinic, Patient & Dentist Information
                         </h3>
 
-                        <!-- Clinic -->
                         <div class="border-l-4 border-blue-500 pl-4 mb-4">
                             <p class="text-sm font-semibold text-gray-500 uppercase">Clinic</p>
                             <p class="font-bold text-lg">{{ $caseOrder->clinic->clinic_name }}</p>
@@ -215,7 +205,7 @@
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <!-- Patient -->
+                          
                             <div class="border-l-4 border-green-500 pl-4">
                                 <p class="text-sm font-semibold text-gray-500 uppercase">Patient</p>
                                 <p class="font-bold">{{ $caseOrder->patient->name }}</p>
@@ -223,7 +213,6 @@
                                 <p class="text-sm text-gray-600">{{ $caseOrder->patient->contact_number }}</p>
                             </div>
 
-                            <!-- Dentist -->
                             <div class="border-l-4 border-purple-500 pl-4">
                                 <p class="text-sm font-semibold text-gray-500 uppercase">Dentist</p>
                                 <p class="font-bold">{{ $caseOrder->dentist->name }}</p>
@@ -233,8 +222,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Appointments Timeline -->
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6">
                         <h3 class="text-lg font-semibold mb-4 flex items-center">
@@ -295,7 +282,6 @@
                     </div>
                 </div>
 
-                <!-- Pickup History -->
                 @if($caseOrder->pickups && $caseOrder->pickups->count() > 0)
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6">
@@ -341,38 +327,64 @@
 
             </div>
 
-            <!-- Sidebar -->
             <div class="space-y-6">
 
-                <!-- Quick Actions -->
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6">
                         <h3 class="text-lg font-semibold mb-4">Quick Actions</h3>
                         <div class="space-y-2">
 
                             @if(in_array($caseOrder->status, ['pending', 'adjustment requested']))
-                            <!-- Create Pickup -->
+                      
                             <a href="{{ route('admin.case-orders.create-pickup', $caseOrder->co_id) }}"
-                                class="block w-full bg-orange-600 hover:bg-orange-700 text-white text-center font-bold py-2 px-4 rounded-lg transition">
-                                🚚 Create Pickup
-                            </a>
+    class="flex items-center justify-center gap-2 w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded-lg transition">
+
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+         stroke="currentColor" stroke-width="2" class="w-5 h-5">
+        <path d="M10 17h4V5H2v12h2" />
+        <path d="M22 17h-4V9h3l1 2z" />
+        <circle cx="7.5" cy="17.5" r="2.5" />
+        <circle cx="17.5" cy="17.5" r="2.5" />
+    </svg>
+
+    Create Pickup
+</a>
+
                             @endif
 
                             @if($caseOrder->status === 'for appointment')
-                            <!-- Create Appointment -->
-                            <a href="{{ route('admin.case-orders.create-appointment', $caseOrder->co_id) }}"
-                                class="block w-full bg-blue-600 hover:bg-blue-700 text-white text-center font-bold py-2 px-4 rounded-lg transition">
-                                📅 Create Appointment
-                            </a>
+                       
+                           <a href="{{ route('admin.case-orders.create-appointment', $caseOrder->co_id) }}"
+    class="flex items-center justify-center gap-2 w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition">
+
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+        stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M8 7V3m8 4V3m-9 8h10m-10 4h10M4 21h16a2 2 0 002-2V7a2 2 0 00-2-2H4a2 2 0 00-2 2v12a2 2 0 002 2z" />
+    </svg>
+
+    Create Appointment
+</a>
+
                             @endif
 
                             @if($caseOrder->latestAppointment && $caseOrder->latestAppointment->work_status ===
                             'completed' && !$caseOrder->latestAppointment->delivery)
-                            <!-- Create Delivery -->
-                            <a href="{{ route('admin.case-orders.create-delivery', $caseOrder->co_id) }}"
-                                class="block w-full bg-green-600 hover:bg-green-700 text-white text-center font-bold py-2 px-4 rounded-lg transition">
-                                🚛 Create Delivery
-                            </a>
+                    
+                           <a href="{{ route('admin.case-orders.create-delivery', $caseOrder->co_id) }}"
+   class="flex items-center justify-center w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition">
+   
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+         stroke="currentColor" stroke-width="2" class="w-5 h-5 mr-2">
+        <path d="M10 17h4V5H2v12h2" />
+        <path d="M22 17h-4V9h3l1 2z" />
+        <circle cx="7.5" cy="17.5" r="2.5" />
+        <circle cx="17.5" cy="17.5" r="2.5" />
+    </svg>
+
+    <span>Create Delivery</span>
+</a>
+
                             @endif
 
                             <a href="{{ route('admin.case-orders.index') }}"

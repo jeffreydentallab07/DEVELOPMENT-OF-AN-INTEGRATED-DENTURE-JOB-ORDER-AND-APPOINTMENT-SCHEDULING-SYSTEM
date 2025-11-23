@@ -1,8 +1,10 @@
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-    <!-- Case Orders -->
-    <div class="bg-white rounded-lg shadow p-6">
-        <h3 class="text-lg font-bold text-gray-800 mb-4">Case Orders</h3>
-        <div class="space-y-3">
+
+    <div class="bg-white rounded-lg shadow p-0 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-xl">
+        <div class="p-4 bg-gradient-to-r from-blue-900 to-blue-700 text-white rounded-t-lg">
+            <h3 class="text-lg font-bold">Case Orders</h3>
+        </div>
+        <div class="p-6 space-y-3">
             <div class="flex justify-between">
                 <span class="text-gray-600">Total Cases</span>
                 <span class="font-bold text-blue-600">{{ $data['total_case_orders'] }}</span>
@@ -18,10 +20,11 @@
         </div>
     </div>
 
-    <!-- Appointments -->
-    <div class="bg-white rounded-lg shadow p-6">
-        <h3 class="text-lg font-bold text-gray-800 mb-4">Appointments</h3>
-        <div class="space-y-3">
+    <div class="bg-white rounded-lg shadow p-0 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-xl">
+        <div class="p-4 bg-gradient-to-r from-blue-900 to-blue-700 text-white rounded-t-lg">
+            <h3 class="text-lg font-bold">Appointments</h3>
+        </div>
+        <div class="p-6 space-y-3">
             <div class="flex justify-between">
                 <span class="text-gray-600">Total Appointments</span>
                 <span class="font-bold text-blue-600">{{ $data['total_appointments'] }}</span>
@@ -33,10 +36,11 @@
         </div>
     </div>
 
-    <!-- Revenue -->
-    <div class="bg-white rounded-lg shadow p-6">
-        <h3 class="text-lg font-bold text-gray-800 mb-4">Revenue</h3>
-        <div class="space-y-3">
+    <div class="bg-white rounded-lg shadow p-0 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-xl">
+        <div class="p-4 bg-gradient-to-r from-blue-900 to-blue-700 text-white rounded-t-lg">
+            <h3 class="text-lg font-bold">Revenue</h3>
+        </div>
+        <div class="p-6 space-y-3">
             <div class="flex justify-between">
                 <span class="text-gray-600">Total Revenue</span>
                 <span class="font-bold text-green-600">₱{{ number_format($data['total_revenue'], 2) }}</span>
@@ -48,10 +52,11 @@
         </div>
     </div>
 
-    <!-- Deliveries -->
-    <div class="bg-white rounded-lg shadow p-6">
-        <h3 class="text-lg font-bold text-gray-800 mb-4">Deliveries</h3>
-        <div class="space-y-3">
+    <div class="bg-white rounded-lg shadow p-0 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-xl">
+        <div class="p-4 bg-gradient-to-r from-blue-900 to-blue-700 text-white rounded-t-lg">
+            <h3 class="text-lg font-bold">Deliveries</h3>
+        </div>
+        <div class="p-6 space-y-3">
             <div class="flex justify-between">
                 <span class="text-gray-600">Total Deliveries</span>
                 <span class="font-bold text-blue-600">{{ $data['total_deliveries'] }}</span>
@@ -63,10 +68,11 @@
         </div>
     </div>
 
-    <!-- Staff -->
-    <div class="bg-white rounded-lg shadow p-6">
-        <h3 class="text-lg font-bold text-gray-800 mb-4">Staff & Clinics</h3>
-        <div class="space-y-3">
+    <div class="bg-white rounded-lg shadow p-0 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-xl">
+         <div class="p-4 bg-gradient-to-r from-blue-900 to-blue-700 text-white rounded-t-lg">
+            <h3 class="text-lg font-bold">Staff & Clinics</h3>
+        </div>
+        <div class="p-6 space-y-3">
             <div class="flex justify-between">
                 <span class="text-gray-600">Total Clinics</span>
                 <span class="font-bold text-blue-600">{{ $data['total_clinics'] }}</span>
@@ -82,10 +88,11 @@
         </div>
     </div>
 
-    <!-- Inventory -->
-    <div class="bg-white rounded-lg shadow p-6">
-        <h3 class="text-lg font-bold text-gray-800 mb-4">Inventory Status</h3>
-        <div class="space-y-3">
+    <div class="bg-white rounded-lg shadow p-0 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-xl">
+        <div class="p-4 bg-gradient-to-r from-blue-900 to-blue-700 text-white rounded-t-lg">
+            <h3 class="text-lg font-bold">Inventory Status</h3>
+        </div>
+        <div class="p-6 space-y-3">
             <div class="flex justify-between">
                 <span class="text-gray-600">Low Stock</span>
                 <span class="font-bold text-orange-600">{{ $data['low_stock_materials'] }}</span>
@@ -96,4 +103,5 @@
             </div>
         </div>
     </div>
+
 </div>

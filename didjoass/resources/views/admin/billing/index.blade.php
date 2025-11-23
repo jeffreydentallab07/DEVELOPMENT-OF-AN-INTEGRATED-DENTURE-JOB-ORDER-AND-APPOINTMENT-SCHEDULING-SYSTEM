@@ -5,7 +5,6 @@
 @section('content')
 <div class="p-6 space-y-6 bg-gray-300 min-h-screen">
 
-    <!-- Header -->
     <div class="flex justify-between items-center">
         <div>
             <h1 class="text-2xl font-bold text-gray-800">Billing Management</h1>
@@ -23,7 +22,6 @@
     </div>
     @endif
 
-    <!-- Filter Tabs -->
     <div class="bg-white rounded-lg shadow">
         <div class="flex border-b">
             <button onclick="filterBillings('all')"
@@ -45,7 +43,6 @@
         </div>
     </div>
 
-    <!-- Billing Table -->
     <div class="overflow-x-auto rounded-xl shadow-lg">
         <table class="min-w-full bg-white">
             <thead>
@@ -97,10 +94,21 @@
                         {{ $billing->created_at->format('M d, Y') }}
                     </td>
                     <td class="px-6 py-3">
-                        <a href="{{ route('admin.billing.show', $billing->id) }}"
-                            class="text-blue-600 hover:underline text-sm">
-                            View Details
-                        </a>
+                 <a href="{{ route('admin.billing.show', $billing->id) }}"
+   class="group relative inline-flex items-center justify-center bg-blue-600 text-white p-2 rounded hover:bg-blue-700 transition">
+
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+         stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+        <path stroke-linecap="round" stroke-linejoin="round"
+              d="M2.036 12.322a1.012 1.012 0 010-.644C3.423 7.51 7.36 4.5 12 4.5c4.64 0 8.577 3.01 9.964 7.178.07.207.07.437 0 .644C20.577 16.49 16.64 19.5 12 19.5c-4.64 0-8.577-3.01-9.964-7.178z" />
+        <path stroke-linecap="round" stroke-linejoin="round"
+              d="M12 15.75a3.75 3.75 0 100-7.5 3.75 3.75 0 000 7.5z" />
+    </svg>
+
+    <span class="absolute left-1/2 -bottom-8 -translate-x-1/2 whitespace-nowrap bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition pointer-events-none">
+        View Details
+    </span>
+</a>
                     </td>
                 </tr>
                 @empty
@@ -112,7 +120,6 @@
         </table>
     </div>
 
-    <!-- Pagination -->
     <div class="mt-4">
         {{ $billings->links() }}
     </div>
@@ -123,7 +130,6 @@
     const rows = document.querySelectorAll('.billing-row');
     const tabs = document.querySelectorAll('.filter-tab');
     
-    // Update tab styles
     tabs.forEach(tab => {
         tab.classList.remove('border-blue-600', 'text-blue-600');
         tab.classList.add('border-transparent', 'text-gray-600');

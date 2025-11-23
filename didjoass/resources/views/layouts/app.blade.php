@@ -17,7 +17,6 @@
 
 <body class="h-screen flex bg-white text-[12px]">
 
-    <!-- Sidebar -->
     <aside class="w-48 bg-blue-900 text-white flex flex-col fixed top-0 left-0 h-full">
         <div class="h-20 px-3 border-b border-blue-700 flex items-center justify-center">
             <img src="{{ asset('images/logo2.png') }}" alt="Logo" class="h-12 object-contain">

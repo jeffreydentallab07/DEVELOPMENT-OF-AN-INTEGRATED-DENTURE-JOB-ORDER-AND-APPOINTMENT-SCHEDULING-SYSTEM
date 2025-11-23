@@ -5,7 +5,6 @@
 @section('content')
 <div class="p-6 space-y-6 bg-gray-300 min-h-screen">
 
-    <!-- Header -->
     <div class="flex justify-between items-center">
         <div>
             <h1 class="text-3xl font-bold text-gray-800">Pending Clinic Registrations</h1>
@@ -21,17 +20,18 @@
         </a>
     </div>
 
-    <!-- Stats Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div class="bg-white rounded-lg shadow p-6">
-            <h3 class="text-gray-500 text-sm font-medium">Total Pending Approvals</h3>
-            <p class="text-3xl font-bold text-orange-600 mt-2">{{ $totalPending }}</p>
-        </div>
-        <div class="bg-white rounded-lg shadow p-6">
-            <h3 class="text-gray-500 text-sm font-medium">New Registrations (Last 7 Days)</h3>
-            <p class="text-3xl font-bold text-blue-600 mt-2">{{ $recentRegistrations }}</p>
-        </div>
+   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="bg-white rounded-lg shadow-md p-6 transform transition duration-300 hover:-translate-y-2 hover:shadow-xl">
+        <h3 class="text-gray-500 text-sm font-medium">Total Pending Approvals</h3>
+        <p class="text-3xl font-bold text-orange-600 mt-2">{{ $totalPending }}</p>
     </div>
+
+    <div class="bg-white rounded-lg shadow-md p-6 transform transition duration-300 hover:-translate-y-2 hover:shadow-xl">
+        <h3 class="text-gray-500 text-sm font-medium">New Registrations (Last 7 Days)</h3>
+        <p class="text-3xl font-bold text-blue-600 mt-2">{{ $recentRegistrations }}</p>
+    </div>
+</div>
+
 
     @if(session('success'))
     <div class="mb-4 p-3 rounded bg-green-100 text-green-700 border border-green-300">
@@ -44,8 +44,6 @@
         {{ session('error') }}
     </div>
     @endif
-
-    <!-- Pending Clinics Table -->
     <div class="overflow-x-auto rounded-xl shadow-lg mt-4">
         <table class="min-w-full border-separate border-spacing-0 bg-white">
             <thead>

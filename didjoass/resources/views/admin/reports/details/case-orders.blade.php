@@ -5,7 +5,6 @@
 @section('content')
 <div class="p-6 space-y-6 bg-gray-300 min-h-screen">
 
-    <!-- Header -->
     <div class="flex justify-between items-center">
         <div>
             <a href="{{ route('admin.reports.index', ['type' => 'case-orders', 'date_from' => $dateFrom, 'date_to' => $dateTo]) }}"
@@ -27,7 +26,6 @@
         </button>
     </div>
 
-    <!-- Executive Summary -->
     <div class="bg-white rounded-lg shadow-lg p-6">
         <h2 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">Executive Summary</h2>
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
@@ -46,11 +44,10 @@
         </div>
     </div>
 
-    <!-- Status Distribution Chart -->
     <div class="bg-white rounded-lg shadow-lg p-6">
         <h2 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">Status Distribution</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- Bar Chart -->
+         
             <div>
                 <h3 class="text-sm font-semibold text-gray-700 mb-3">Cases by Status</h3>
                 @foreach($data['status_breakdown'] as $status => $count)
@@ -67,8 +64,6 @@
                 </div>
                 @endforeach
             </div>
-
-            <!-- Case Type Distribution -->
             <div>
                 <h3 class="text-sm font-semibold text-gray-700 mb-3">Cases by Type</h3>
                 @foreach($data['case_type_breakdown'] as $type)
@@ -88,7 +83,6 @@
         </div>
     </div>
 
-    <!-- Case Type Breakdown Table -->
     <div class="bg-white rounded-lg shadow-lg p-6">
         <h2 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">Case Type Analysis</h2>
         <div class="overflow-x-auto">
@@ -135,22 +129,20 @@
             </table>
         </div>
     </div>
-
-    <!-- Detailed Case Orders List -->
     <div class="bg-white rounded-lg shadow-lg p-6">
         <h2 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">All Case Orders ({{ $data['total_cases'] }})</h2>
         <div class="overflow-x-auto">
             <table class="min-w-full">
-                <thead class="bg-gray-50">
+                <thead class="bg-blue-900 ">
                     <tr>
-                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Case No.</th>
-                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Clinic</th>
-                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Patient</th>
-                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Case Type</th>
-                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Priority</th>
-                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Created</th>
-                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-white uppercase">Case No.</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-white uppercase">Clinic</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-white uppercase">Patient</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-white uppercase">Case Type</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-white uppercase">Status</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-white uppercase">Priority</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-white uppercase">Created</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-white uppercase">Actions</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200">

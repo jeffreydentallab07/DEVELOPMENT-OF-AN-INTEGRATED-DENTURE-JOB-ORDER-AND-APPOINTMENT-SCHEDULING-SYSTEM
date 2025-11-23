@@ -17,9 +17,9 @@
         <img src="{{ asset('images/logo1.png') }}" alt="Logo" class="h-12 w-auto">
       </div>
       <nav class="hidden md:flex space-x-6 items-center">
-        <a href="#home" class="text-gray-700 hover:text-[#189ab4] font-medium transition">Home</a>
-        <a href="#services" class="text-gray-700 hover:text-[#189ab4] font-medium transition">Services</a>
-        <a href="#contact" class="text-gray-700 hover:text-[#189ab4] font-medium transition">
+        <a href="#home" class="text-gray-700 hover:text-blue-900 font-medium transition">Home</a>
+        <a href="#services" class="text-gray-700 hover:text-blue-900 font-medium transition">Services</a>
+        <a href="#contact" class="text-gray-700 hover:text-blue-900 font-medium transition">
           Contact Us
         </a>
         <a href="#login"
@@ -34,7 +34,7 @@
         <div>
           <h1 class="text-5xl md:text-6xl font-extrabold text-gray-900 mb-6">
             Your Smile,<br>
-            <span class="text-[#189ab4]">Our Masterpiece</span>
+            <span class="text-blue-900">Our Masterpiece</span>
           </h1>
           <p class="text-xl text-gray-600 mb-8">
             A modern system for dental clinics and laboratories to manage appointments,
@@ -42,11 +42,11 @@
           </p>
           <div class="flex flex-wrap gap-4">
             <a href="#signup"
-              class="bg-[#189ab4] text-white px-8 py-4 rounded-lg hover:bg-[#127a95] transition font-bold shadow-lg">
+              class="bg-blue-900 text-white px-8 py-4 rounded-lg hover:bg-[#127a95] transition font-bold shadow-lg">
               Register Your Clinic
             </a>
             <a href="#login"
-              class="bg-white text-[#189ab4] px-8 py-4 rounded-lg hover:bg-gray-50 transition font-bold shadow-lg border-2 border-[#189ab4]">
+              class="bg-white text-blue-900 px-8 py-4 rounded-lg hover:bg-gray-50 transition font-bold shadow-lg border-2 border-blue-900">
               Login
             </a>
           </div>
@@ -90,7 +90,7 @@
       <div class="bg-white rounded-2xl shadow-2xl p-8 md:p-10">
 
         <div class="text-center mb-8">
-          <div class="inline-block p-4 bg-gradient-to-br from-[#189ab4] to-blue-600 rounded-full mb-4">
+          <div class="inline-block p-4 bg-gradient-to-br from-blue-900 to-blue-600 rounded-full mb-4">
             <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4" />
@@ -133,7 +133,7 @@
               </div>
               <input type="text" name="email_or_username" placeholder="Enter your email or username"
                 value="{{ old('email_or_username') }}" required autofocus
-                class="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#189ab4] focus:border-[#189ab4] transition">
+                class="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-900 focus:border-blue-900 transition">
             </div>
           </div>
 
@@ -148,9 +148,9 @@
               </div>
               <input type="password" name="password" id="loginPassword" placeholder="Enter your password" required
                 minlength="8"
-                class="w-full pl-12 pr-12 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#189ab4] focus:border-[#189ab4] transition">
+                class="w-full pl-12 pr-12 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-900 focus:border-blue-900 transition">
               <button type="button" onclick="togglePassword()"
-                class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-[#189ab4] transition">
+                class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-blue-900 transition">
                 <svg id="eyeIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -166,13 +166,13 @@
 
           <div class="flex items-center justify-between text-sm">
             <a href="{{ route('password.request') }}"
-              class="text-[#189ab4] hover:text-[#127a95] font-medium transition">
+              class="text-blue-900 hover:text-[#127a95] font-medium transition">
               Forgot Password?
             </a>
           </div>
 
           <button type="submit"
-            class="w-full bg-gradient-to-r from-[#189ab4] to-blue-900 text-white rounded-lg font-bold py-3 hover:from-[#127a95] hover:to-blue-700 transition shadow-lg transform hover:scale-[1.02] duration-200">
+            class="w-full bg-gradient-to-r from-blue-900 to-blue-900 text-white rounded-lg font-bold py-3 hover:from-[#127a95] hover:to-blue-700 transition shadow-lg transform hover:scale-[1.02] duration-200">
             Sign In
           </button>
 
@@ -190,7 +190,7 @@
           <div class="text-center pt-4">
             <p class="text-sm text-gray-600 mb-2">New clinic?</p>
             <a href="#signup"
-              class="inline-block bg-white text-[#189ab4] border-2 border-[#189ab4] px-6 py-2 rounded-lg hover:bg-blue-900 hover:text-white transition font-semibold">
+              class="inline-block bg-white text-blue-900 border-2 border-blue-900 px-6 py-2 rounded-lg hover:bg-blue-900 hover:text-white transition font-semibold">
               Register Your Clinic
             </a>
           </div>
@@ -261,7 +261,6 @@
                 @enderror
               </div>
 
-              <!-- Owner Name -->
               <div>
                 <label class="block text-sm font-semibold text-gray-700 mb-2">
                   Owner Name <span class="text-red-500">*</span>
@@ -282,7 +281,6 @@
                 @enderror
               </div>
 
-              <!-- Address -->
               <div class="md:col-span-2">
                 <label class="block text-sm font-semibold text-gray-700 mb-2">
                   Address <span class="text-red-500">*</span>
@@ -307,7 +305,6 @@
             </div>
           </div>
 
-          <!-- Contact Information Section -->
           <div class="mb-8">
             <div class="flex items-center mb-6 pb-3 border-b-2 border-gray-200">
               <div class="bg-green-100 rounded-lg p-2 mr-3">
@@ -320,7 +317,7 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <!-- Email -->
+           
               <div>
                 <label class="block text-sm font-semibold text-gray-700 mb-2">
                   Email Address <span class="text-red-500">*</span>
@@ -340,7 +337,6 @@
                 @enderror
               </div>
 
-              <!-- Contact Number -->
               <div>
                 <label class="block text-sm font-semibold text-gray-700 mb-2">
                   Contact Number <span class="text-red-500">*</span>
@@ -363,7 +359,6 @@
             </div>
           </div>
 
-          <!-- Account Security Section -->
           <div class="mb-8">
             <div class="flex items-center mb-6 pb-3 border-b-2 border-gray-200">
               <div class="bg-purple-100 rounded-lg p-2 mr-3">
@@ -376,7 +371,7 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <!-- Username -->
+             
               <div>
                 <label class="block text-sm font-semibold text-gray-700 mb-2">
                   Username <span class="text-red-500">*</span>
@@ -399,7 +394,6 @@
 
               <div></div>
 
-              <!-- Password -->
               <div>
                 <label class="block text-sm font-semibold text-gray-700 mb-2">
                   Password <span class="text-red-500">*</span>
@@ -419,7 +413,6 @@
                 @enderror
               </div>
 
-              <!-- Confirm Password -->
               <div>
                 <label class="block text-sm font-semibold text-gray-700 mb-2">
                   Confirm Password <span class="text-red-500">*</span>
@@ -455,7 +448,6 @@
         </form>
       </div>
 
-      <!-- Info Banner -->
       <div class="mt-8 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-xl p-6 text-white shadow-lg">
         <div class="flex items-start">
           <svg class="w-6 h-6 mr-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -476,13 +468,12 @@
   </section>
 
 
-  <!-- Contact Section (paste near end of page, before </body>) -->
   <section id="contact" class="py-20 flex flex-col justify-center items-center bg-slate-50 px-6 relative">
     <h2 class="text-3xl font-bold text-sky-900 mb-6">Contact Us</h2>
 
     <div class="flex justify-center w-full">
       <div class="grid md:grid-cols-3 gap-8 w-full max-w-5xl">
-        <!-- PHONE CARD -->
+
         <div
           class="bg-white rounded-2xl shadow-lg p-6 text-center transition-transform duration-300 hover:-translate-y-2">
           <h3 class="text-xl font-semibold text-sky-800 mb-4">Phone Number</h3>
@@ -508,8 +499,6 @@
             </div>
           </div>
         </div>
-
-        <!-- ADDRESS CARD -->
         <div
           class="bg-white rounded-2xl shadow-lg p-6 text-center transition-transform duration-300 hover:-translate-y-2">
           <h3 class="text-xl font-semibold text-sky-800 mb-4">Address</h3>
@@ -523,7 +512,6 @@
           </button>
         </div>
 
-        <!-- SOCIAL / EMAIL CARD -->
         <div
           class="bg-white rounded-2xl shadow-lg p-6 text-center transition-transform duration-300 hover:-translate-y-2">
           <h3 class="text-xl font-semibold text-sky-800 mb-6">Social Media</h3>
@@ -554,7 +542,6 @@
     </div>
   </section>
 
-  <!-- MAP MODAL (hidden by default) -->
   <div id="mapModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
     <div class="bg-white w-full max-w-2xl p-6 rounded-2xl shadow-2xl relative">
       <button onclick="closeModal()" aria-label="Close map"
@@ -572,8 +559,7 @@
   </div>
 
 
-  <!-- Footer -->
-  <footer class="bg-gray-900 text-white py-12">
+  <footer class="bg-blue-900 text-white py-12">
     <div class="max-w-7xl mx-auto px-6 text-center">
       <img src="{{ asset('images/logo2.png') }}" alt="Logo" class="h-16 mx-auto mb-4">
       <h3 class="text-2xl font-bold mb-2">Jeffrey Dental Laboratory</h3>
@@ -582,7 +568,6 @@
     </div>
   </footer>
 
-  <!-- JavaScript -->
   <script>
     function togglePassword() {
       const input = document.getElementById('loginPassword');
@@ -591,15 +576,14 @@
       if (input.type === "password") {
         input.type = "text";
         icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>';
-        icon.classList.add("text-[#189ab4]");
+        icon.classList.add("text-blue-900");
       } else {
         input.type = "password";
         icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>';
-        icon.classList.remove("text-[#189ab4]");
+        icon.classList.remove("text-blue-900");
       }
     }
 
-    // Smooth scroll
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function (e) {
         e.preventDefault();
@@ -614,7 +598,7 @@
     function openModal() {
     const modal = document.getElementById('mapModal');
     if (modal) modal.classList.remove('hidden', 'opacity-0'), modal.classList.add('flex');
-    // prevent background scroll
+  
     document.documentElement.style.overflow = 'hidden';
   }
 
@@ -624,7 +608,6 @@
     document.documentElement.style.overflow = '';
   }
 
-  // Close modal when clicking outside the content
   document.addEventListener('click', function (e) {
     const modal = document.getElementById('mapModal');
     if (!modal || modal.classList.contains('hidden')) return;
@@ -634,7 +617,6 @@
     }
   });
 
-  // Smooth scrolling for in-page nav links like #contact
   document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', function (e) {
       const href = this.getAttribute('href');
@@ -643,7 +625,7 @@
       if (target) {
         e.preventDefault();
         target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        // update URL without jumping
+    
         history.replaceState(null, '', href);
       }
     });

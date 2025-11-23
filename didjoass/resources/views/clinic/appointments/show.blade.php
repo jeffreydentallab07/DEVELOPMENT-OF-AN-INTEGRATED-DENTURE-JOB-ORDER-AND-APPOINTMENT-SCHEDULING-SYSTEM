@@ -3,7 +3,7 @@
 @section('title', 'Appointment Details')
 
 @section('content')
-<div class="p-6 bg-gray-100 min-h-screen">
+<div class="p-6 bg-gray-300 min-h-screen">
     <div class="max-w-6xl mx-auto">
 
         <a href="{{ route('clinic.appointments.index') }}" class="text-blue-600 hover:underline mb-4 inline-block">
@@ -18,10 +18,8 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-            <!-- Main Content -->
             <div class="lg:col-span-2 space-y-6">
 
-                <!-- Appointment Info Card -->
                 <div class="bg-white rounded-lg shadow-lg overflow-hidden">
                     <div class="bg-gradient-to-r from-blue-900 to-blue-700 p-6 text-white">
                         <div class="flex items-center justify-between">
@@ -85,7 +83,6 @@
                     </div>
                 </div>
 
-                <!-- Technician Info -->
                 <div class="bg-white rounded-lg shadow p-6">
                     <h2 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">Assigned Technician</h2>
 
@@ -99,8 +96,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Materials Used -->
                 @if($appointment->materialUsages->count() > 0)
                 <div class="bg-white rounded-lg shadow p-6">
                     <h2 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">Materials Used</h2>
@@ -151,7 +146,6 @@
                 </div>
                 @endif
 
-                <!-- Billing Information -->
                 @if($appointment->billing)
                 <div class="bg-white rounded-lg shadow p-6">
                     <h2 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">Billing Information</h2>
@@ -194,10 +188,8 @@
 
             </div>
 
-            <!-- Sidebar -->
             <div class="space-y-6">
 
-                <!-- Status Timeline -->
                 <div class="bg-white rounded-lg shadow p-6">
                     <h3 class="text-lg font-bold text-gray-800 mb-4">Status Timeline</h3>
 
@@ -235,7 +227,6 @@
                     </div>
                 </div>
 
-                <!-- Quick Stats -->
                 <div class="bg-white rounded-lg shadow p-6">
                     <h3 class="text-lg font-bold text-gray-800 mb-4">Quick Stats</h3>
 
@@ -266,7 +257,6 @@
                     </div>
                 </div>
 
-                <!-- Actions -->
                 @if($appointment->billing)
                 <div class="bg-white rounded-lg shadow p-6">
                     <h3 class="text-lg font-bold text-gray-800 mb-4">Actions</h3>

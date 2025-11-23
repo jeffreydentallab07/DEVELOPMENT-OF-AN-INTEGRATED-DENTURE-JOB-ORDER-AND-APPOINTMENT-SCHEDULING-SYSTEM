@@ -3,10 +3,9 @@
 @section('page-title', 'Edit Billing')
 
 @section('content')
-<div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 py-8 px-4">
+<div class="p-6 space-y-6 bg-gray-300 min-h-screen">
     <div class="max-w-4xl mx-auto">
 
-        <!-- Header -->
         <div class="mb-6">
             <a href="{{ route('admin.billing.show', $billing->id) }}"
                 class="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium mb-3">

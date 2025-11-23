@@ -5,36 +5,27 @@
             View Detailed Breakdown
         </a>
     </div>
-    <!-- Revenue Summary -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="bg-white rounded-lg shadow p-6">
-            <h3 class="text-sm text-gray-500">Total Revenue (Paid)</h3>
-            <p class="text-3xl font-bold text-green-600">₱{{ number_format($data['total_revenue'], 2) }}</p>
-        </div>
-        <div class="bg-white rounded-lg shadow p-6">
-            <h3 class="text-sm text-gray-500">Pending Payment</h3>
-            <p class="text-3xl font-bold text-yellow-600">₱{{ number_format($data['pending_revenue'], 2) }}</p>
-        </div>
-        <div class="bg-white rounded-lg shadow p-6">
-            <h3 class="text-sm text-gray-500">Partial Payment</h3>
-            <p class="text-3xl font-bold text-orange-600">₱{{ number_format($data['partial_revenue'], 2) }}</p>
-        </div>
+   <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div
+        class="bg-white rounded-lg shadow p-6 transform transition-transform duration-300 hover:-translate-y-2 hover:scale-105 hover:shadow-xl">
+        <h3 class="text-sm text-gray-500">Total Revenue (Paid)</h3>
+        <p class="text-3xl font-bold text-green-600">₱{{ number_format($data['total_revenue'], 2) }}</p>
     </div>
-
-    <!-- Top Clinics by Revenue -->
-    <div class="bg-white rounded-lg shadow p-6">
-        <h3 class="text-lg font-bold text-gray-800 mb-4">Top 10 Clinics by Revenue</h3>
-        <div class="space-y-3">
-            @foreach($data['revenue_by_clinic'] as $clinic => $revenue)
-            <div class="flex justify-between items-center p-3 bg-gray-50 rounded">
-                <span class="font-medium text-gray-800">{{ $clinic }}</span>
-                <span class="font-bold text-green-600">₱{{ number_format($revenue, 2) }}</span>
-            </div>
-            @endforeach
-        </div>
+    <div
+        class="bg-white rounded-lg shadow p-6 transform transition-transform duration-300 hover:-translate-y-2 hover:scale-105 hover:shadow-xl">
+        <h3 class="text-sm text-gray-500">Pending Payment</h3>
+        <p class="text-3xl font-bold text-yellow-600">₱{{ number_format($data['pending_revenue'], 2) }}</p>
     </div>
+    <div
+        class="bg-white rounded-lg shadow p-6 transform transition-transform duration-300 hover:-translate-y-2 hover:scale-105 hover:shadow-xl">
+        <h3 class="text-sm text-gray-500">Partial Payment</h3>
+        <p class="text-3xl font-bold text-orange-600">₱{{ number_format($data['partial_revenue'], 2) }}</p>
+    </div>
+</div>
 
-    <!-- Revenue by Month -->
+
+   
+
     <div class="bg-white rounded-lg shadow p-6">
         <h3 class="text-lg font-bold text-gray-800 mb-4">Revenue by Month</h3>
         <div class="overflow-x-auto">
@@ -59,18 +50,17 @@
         </div>
     </div>
 
-    <!-- Billing Details -->
     <div class="bg-white rounded-lg shadow p-6">
         <h3 class="text-lg font-bold text-gray-800 mb-4">Billing Records</h3>
         <div class="overflow-x-auto">
             <table class="min-w-full">
-                <thead class="bg-gray-50">
+                <thead class="bg-blue-900">
                     <tr>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Billing ID</th>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Clinic</th>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Amount</th>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-white uppercase">Billing ID</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-white  uppercase">Clinic</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-white  uppercase">Amount</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-white  uppercase">Status</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-white  uppercase">Date</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200">

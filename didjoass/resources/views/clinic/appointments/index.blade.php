@@ -18,50 +18,54 @@
         @endif
 
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-            <div class="bg-white rounded-lg shadow p-6">
-                <h3 class="text-gray-500 text-sm font-medium">Total Appointments</h3>
-                <p class="text-3xl font-bold text-blue-600 mt-2">{{ $appointments->total() }}</p>
-            </div>
-            <div class="bg-white rounded-lg shadow p-6">
-                <h3 class="text-gray-500 text-sm font-medium">Pending</h3>
-                <p class="text-3xl font-bold text-yellow-600 mt-2">
-                    {{ $appointments->where('work_status', 'pending')->count() }}
-                </p>
-            </div>
-            <div class="bg-white rounded-lg shadow p-6">
-                <h3 class="text-gray-500 text-sm font-medium">In Progress</h3>
-                <p class="text-3xl font-bold text-blue-600 mt-2">
-                    {{ $appointments->where('work_status', 'in-progress')->count() }}
-                </p>
-            </div>
-            <div class="bg-white rounded-lg shadow p-6">
-                <h3 class="text-gray-500 text-sm font-medium">Completed</h3>
-                <p class="text-3xl font-bold text-green-600 mt-2">
-                    {{ $appointments->where('work_status', 'completed')->count() }}
-                </p>
-            </div>
-        </div>
+    <div class="bg-white rounded-lg shadow p-6 transform transition-all duration-300 hover:-translate-y-2 hover:scale-105 hover:shadow-xl">
+        <h3 class="text-gray-500 text-sm font-medium">Total Appointments</h3>
+        <p class="text-3xl font-bold text-blue-600 mt-2">{{ $appointments->total() }}</p>
+    </div>
 
-        <div class="bg-white rounded-lg shadow mb-6">
-            <div class="flex border-b">
-                <button onclick="filterAppointments('all')"
-                    class="filter-tab px-6 py-3 font-medium text-blue-600 border-b-2 border-blue-600">
-                    All
-                </button>
-                <button onclick="filterAppointments('pending')"
-                    class="filter-tab px-6 py-3 font-medium text-gray-600 hover:text-blue-600 border-b-2 border-transparent">
-                    Pending
-                </button>
-                <button onclick="filterAppointments('in-progress')"
-                    class="filter-tab px-6 py-3 font-medium text-gray-600 hover:text-blue-600 border-b-2 border-transparent">
-                    In Progress
-                </button>
-                <button onclick="filterAppointments('completed')"
-                    class="filter-tab px-6 py-3 font-medium text-gray-600 hover:text-blue-600 border-b-2 border-transparent">
-                    Completed
-                </button>
-            </div>
-        </div>
+    <div class="bg-white rounded-lg shadow p-6 transform transition-all duration-300 hover:-translate-y-2 hover:scale-105 hover:shadow-xl">
+        <h3 class="text-gray-500 text-sm font-medium">Pending</h3>
+        <p class="text-3xl font-bold text-yellow-600 mt-2">
+            {{ $appointments->where('work_status', 'pending')->count() }}
+        </p>
+    </div>
+
+    <div class="bg-white rounded-lg shadow p-6 transform transition-all duration-300 hover:-translate-y-2 hover:scale-105 hover:shadow-xl">
+        <h3 class="text-gray-500 text-sm font-medium">In Progress</h3>
+        <p class="text-3xl font-bold text-blue-600 mt-2">
+            {{ $appointments->where('work_status', 'in-progress')->count() }}
+        </p>
+    </div>
+
+    <div class="bg-white rounded-lg shadow p-6 transform transition-all duration-300 hover:-translate-y-2 hover:scale-105 hover:shadow-xl">
+        <h3 class="text-gray-500 text-sm font-medium">Completed</h3>
+        <p class="text-3xl font-bold text-green-600 mt-2">
+            {{ $appointments->where('work_status', 'completed')->count() }}
+        </p>
+    </div>
+</div>
+
+
+        <div class="bg-blue-900 rounded-lg shadow mb-6"> 
+    <div class="flex border-b">
+        <button onclick="filterAppointments('all')"
+            class="filter-tab px-6 py-3 font-medium text-white border-b-2 border-blue-600">
+            All
+        </button>
+        <button onclick="filterAppointments('pending')"
+            class="filter-tab px-6 py-3 font-medium text-white hover:text-blue-300 border-b-2 border-transparent">
+            Pending
+        </button>
+        <button onclick="filterAppointments('in-progress')"
+            class="filter-tab px-6 py-3 font-medium text-white hover:text-blue-300 border-b-2 border-transparent">
+            In Progress
+        </button>
+        <button onclick="filterAppointments('completed')"
+            class="filter-tab px-6 py-3 font-medium text-white hover:text-blue-300 border-b-2 border-transparent">
+            Completed
+        </button>
+    </div>
+</div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @forelse($appointments as $appointment)

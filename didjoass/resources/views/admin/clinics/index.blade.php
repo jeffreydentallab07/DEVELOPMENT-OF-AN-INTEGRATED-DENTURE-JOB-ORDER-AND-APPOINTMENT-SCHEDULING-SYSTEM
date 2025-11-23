@@ -5,7 +5,6 @@
 @section('content')
 <div class="p-6 space-y-6 bg-gray-300 min-h-screen">
 
-    <!-- Header -->
     <div class="flex justify-between items-center">
         <div>
             <h1 class="text-3xl font-bold text-gray-800">Clinic Management</h1>
@@ -29,17 +28,18 @@
         </a>
     </div>
 
-    <!-- Stats Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div class="bg-white rounded-lg shadow p-6">
-            <h3 class="text-gray-500 text-sm font-medium">Total Registered Clinics</h3>
-            <p class="text-3xl font-bold text-blue-600 mt-2">{{ $totalClinics }}</p>
-        </div>
-        <div class="bg-white rounded-lg shadow p-6">
-            <h3 class="text-gray-500 text-sm font-medium">Active Clinics (Last 30 Days)</h3>
-            <p class="text-3xl font-bold text-green-600 mt-2">{{ $activeClinics }}</p>
-        </div>
+   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="bg-white rounded-lg shadow-md p-6 transform transition duration-300 hover:-translate-y-2 hover:shadow-xl">
+        <h3 class="text-gray-500 text-sm font-medium">Total Registered Clinics</h3>
+        <p class="text-3xl font-bold text-blue-600 mt-2">{{ $totalClinics }}</p>
     </div>
+
+    <div class="bg-white rounded-lg shadow-md p-6 transform transition duration-300 hover:-translate-y-2 hover:shadow-xl">
+        <h3 class="text-gray-500 text-sm font-medium">Active Clinics (Last 30 Days)</h3>
+        <p class="text-3xl font-bold text-green-600 mt-2">{{ $activeClinics }}</p>
+    </div>
+</div>
+
 
     @if(session('success'))
     <div class="mb-4 p-3 rounded bg-green-100 text-green-700 border border-green-300">
@@ -47,7 +47,6 @@
     </div>
     @endif
 
-    <!-- Clinics Table -->
     <div class="overflow-x-auto rounded-xl shadow-lg mt-4">
         <table class="min-w-full border-separate border-spacing-0 bg-white">
             <thead>
@@ -58,9 +57,6 @@
                     <th class="px-6 py-3 text-left">Contact</th>
                     <th class="px-6 py-3 text-left">Address</th>
                     <th class="px-6 py-3 text-left">Status</th>
-                    <th class="px-6 py-3 text-left">Case Orders</th>
-                    <th class="px-6 py-3 text-left">Patients</th>
-                    <th class="px-6 py-3 text-left">Dentists</th>
                     <th class="px-6 py-3 text-left">Actions</th>
                 </tr>
             </thead>
@@ -90,24 +86,10 @@
                         </span>
                         @endif
                     </td>
-                    <td class="px-6 py-3">
-                        <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">
-                            {{ $clinic->case_orders_count }}
-                        </span>
-                    </td>
-                    <td class="px-6 py-3">
-                        <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">
-                            {{ $clinic->patients_count }}
-                        </span>
-                    </td>
-                    <td class="px-6 py-3">
-                        <span class="px-2 py-1 bg-purple-100 text-purple-800 rounded-full text-xs font-medium">
-                            {{ $clinic->dentists_count }}
-                        </span>
-                    </td>
+                   
                     <td class="p-0">
                         <div class="flex justify-center items-baseline">
-                            <!-- View Button -->
+                    
                             <a href="{{ route('admin.clinics.show', $clinic->clinic_id) }}"
                                 class="px-2 py-1 bg-gray-500 text-white rounded hover:bg-gray-600 transition"
                                 aria-label="View Clinic">
@@ -131,7 +113,6 @@
         </table>
     </div>
 
-    <!-- Pagination -->
     <div class="mt-4">
         {{ $clinics->links() }}
     </div>

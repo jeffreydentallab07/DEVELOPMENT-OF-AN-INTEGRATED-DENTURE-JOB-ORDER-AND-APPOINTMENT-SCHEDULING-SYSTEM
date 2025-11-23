@@ -5,7 +5,6 @@
             View Detailed Breakdown
         </a>
     </div>
-    <!-- Summary Cards -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
         <div class="bg-white rounded-lg shadow p-6">
             <h3 class="text-sm text-gray-500">Total Cases</h3>
@@ -19,7 +18,6 @@
         @endforeach
     </div>
 
-    <!-- Case Type Breakdown -->
     <div class="bg-white rounded-lg shadow p-6">
         <h3 class="text-lg font-bold text-gray-800 mb-4">Cases by Type</h3>
         <div class="overflow-x-auto">
@@ -42,19 +40,18 @@
         </div>
     </div>
 
-    <!-- Case Orders List -->
     <div class="bg-white rounded-lg shadow p-6">
         <h3 class="text-lg font-bold text-gray-800 mb-4">Case Orders</h3>
         <div class="overflow-x-auto">
             <table class="min-w-full">
-                <thead class="bg-gray-50">
+                <thead class="bg-blue-900">
                     <tr>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Case No.</th>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Clinic</th>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Patient</th>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Case Type</th>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Created</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-white uppercase">Case No.</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-white uppercase">Clinic</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-white uppercase">Patient</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-white uppercase">Case Type</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-white uppercase">Status</th>
+                        <th class="px-4 py-2 text-left text-xs font-medium text-white uppercase">Created</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200">

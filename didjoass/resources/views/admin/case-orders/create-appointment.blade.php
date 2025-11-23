@@ -6,7 +6,6 @@
 <div class="p-6 bg-gray-300 min-h-screen">
     <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
 
-        <!-- Header -->
         <div class="mb-6 flex items-center">
             <a href="{{ route('admin.case-orders.show', $caseOrder->co_id) }}"
                 class="mr-4 text-gray-600 hover:text-gray-900">
@@ -16,8 +15,6 @@
                 Create Appointment for CASE-{{ str_pad($caseOrder->co_id, 5, '0', STR_PAD_LEFT) }}
             </h1>
         </div>
-
-        <!-- Info Alert -->
         <div class="mb-6 bg-green-50 border-l-4 border-green-400 p-4">
             <div class="flex">
                 <div class="flex-shrink-0">
@@ -35,7 +32,6 @@
             </div>
         </div>
 
-        <!-- Case Details -->
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
             <div class="p-6">
                 <h3 class="text-lg font-semibold mb-4">Case Order Details</h3>
@@ -57,14 +53,12 @@
             </div>
         </div>
 
-        <!-- Form -->
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-8">
 
                 <form action="{{ route('admin.case-orders.store-appointment', $caseOrder->co_id) }}" method="POST">
                     @csrf
 
-                    <!-- Technician Selection -->
                     <div class="mb-6">
                         <label class="block text-sm font-medium text-gray-700 mb-2">
                             Assign Technician <span class="text-red-500">*</span>
@@ -84,10 +78,10 @@
                         @enderror
                     </div>
 
-                    <!-- Schedule DateTime -->
                     <div class="mb-6">
                         <label class="block text-sm font-medium text-gray-700 mb-2">
-                            Schedule Date & Time <span class="text-red-500">*</span>
+                         Set Date & Time (Estimated) <span class="text-red-500">*</span>
+
                         </label>
                         <input type="datetime-local" name="estimated_date" required
                             min="{{ date('Y-m-d', strtotime('+1 hour')) }}" value="{{ old('estimated_date') }}"
@@ -97,7 +91,6 @@
                         @enderror
                     </div>
 
-                    <!-- Purpose -->
                     <div class="mb-6">
                         <label class="block text-sm font-medium text-gray-700 mb-2">
                             Purpose / Work Description
@@ -109,7 +102,6 @@
                         @enderror
                     </div>
 
-                    <!-- Action Buttons -->
                     <div class="flex justify-end gap-4">
                         <a href="{{ route('admin.case-orders.show', $caseOrder->co_id) }}"
                             class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition">

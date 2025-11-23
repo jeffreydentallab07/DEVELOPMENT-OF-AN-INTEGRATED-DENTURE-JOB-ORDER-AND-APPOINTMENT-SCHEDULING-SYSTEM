@@ -3,7 +3,7 @@
 @section('title', 'Appointment Details')
 
 @section('content')
-<div class="p-6 bg-gray-100 min-h-screen">
+<div class="p-6 bg-gray-300 min-h-screen">
     <div class="max-w-7xl mx-auto">
 
         <a href="{{ route('technician.appointments.index') }}" class="text-blue-600 hover:underline mb-4 inline-block">
@@ -24,10 +24,8 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-            <!-- Main Content -->
             <div class="lg:col-span-2 space-y-6">
 
-                <!-- Appointment Info Card -->
                 <div class="bg-white rounded-lg shadow-lg overflow-hidden">
                     <div class="bg-gradient-to-r from-blue-900 to-blue-700 p-6 text-white">
                         <div class="flex items-center justify-between">
@@ -91,7 +89,6 @@
                     </div>
                 </div>
 
-                <!-- Clinic & Patient Info -->
                 <div class="bg-white rounded-lg shadow p-6">
                     <h2 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">Clinic & Patient Information</h2>
 
@@ -123,7 +120,6 @@
                     </div>
                 </div>
 
-                <!-- Materials Used -->
                 <div class="bg-white rounded-lg shadow p-6">
                     <div class="flex justify-between items-center mb-4 border-b pb-2">
                         <h2 class="text-xl font-bold text-gray-800">Materials Used</h2>
@@ -148,8 +144,7 @@
                                         Price</th>
                                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Total
                                     </th>
-                                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Notes
-                                    </th>
+                                   
                                     @if($appointment->work_status !== 'completed' && $appointment->work_status !==
                                     'cancelled')
                                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Action
@@ -168,7 +163,6 @@
                                         number_format($usage->material->price, 2) }}</td>
                                     <td class="px-4 py-3 text-sm font-semibold text-green-600">₱{{
                                         number_format($usage->total_cost, 2) }}</td>
-                                    <td class="px-4 py-3 text-sm text-gray-600">{{ $usage->notes ?? '-' }}</td>
                                     @if($appointment->work_status !== 'completed' && $appointment->work_status !==
                                     'cancelled')
                                     <td class="px-4 py-3">
@@ -205,10 +199,8 @@
 
             </div>
 
-            <!-- Sidebar -->
             <div class="space-y-6">
 
-                <!-- Work Status Update -->
                 @if($appointment->work_status !== 'completed' && $appointment->work_status !== 'cancelled')
                 <div class="bg-white rounded-lg shadow p-6">
                     <h3 class="text-lg font-bold text-gray-800 mb-4">Update Status</h3>
@@ -219,8 +211,7 @@
                         <div class="space-y-3">
                             <select name="work_status" required
                                 class="w-full border-2 border-gray-300 rounded-lg p-3 focus:border-blue-500 focus:outline-none">
-                                <option value="pending" {{ $appointment->work_status === 'pending' ? 'selected' : ''
-                                    }}>Pending</option>
+                                
                                 <option value="in-progress" {{ $appointment->work_status === 'in-progress' ? 'selected'
                                     : '' }}>In Progress</option>
                                 <option value="completed" {{ $appointment->work_status === 'completed' ? 'selected' : ''
@@ -230,6 +221,7 @@
                                 class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition font-semibold">
                                 Update Status
                             </button>
+                            
                         </div>
                     </form>
 
@@ -243,7 +235,6 @@
                 </div>
                 @endif
 
-                <!-- Timeline -->
                 <div class="bg-white rounded-lg shadow p-6">
                     <h3 class="text-lg font-bold text-gray-800 mb-4">Timeline</h3>
 
@@ -281,7 +272,6 @@
                     </div>
                 </div>
 
-                <!-- Quick Stats -->
                 <div class="bg-white rounded-lg shadow p-6">
                     <h3 class="text-lg font-bold text-gray-800 mb-4">Statistics</h3>
 
@@ -315,7 +305,6 @@
     </div>
 </div>
 
-<!-- Add Material Modal -->
 <div id="addMaterialModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
     <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4">
         <h3 class="text-xl font-bold text-gray-800 mb-4">Add Material</h3>
@@ -350,12 +339,7 @@
                 <p id="totalCost" class="text-lg font-bold text-green-600"></p>
             </div>
 
-            <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-700 mb-2">Notes (Optional)</label>
-                <textarea name="notes" rows="3"
-                    class="w-full border-2 border-gray-300 rounded-lg p-2 focus:border-blue-500 focus:outline-none"
-                    placeholder="Any additional notes..."></textarea>
-            </div>
+          
 
             <div class="flex justify-end gap-3">
                 <button type="button" onclick="closeAddMaterialModal()"

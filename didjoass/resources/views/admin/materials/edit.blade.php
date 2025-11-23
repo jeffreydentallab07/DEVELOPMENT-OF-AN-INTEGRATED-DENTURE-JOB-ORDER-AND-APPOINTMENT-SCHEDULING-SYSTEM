@@ -3,7 +3,7 @@
 @section('page-title', 'Edit Material')
 
 @section('content')
-<div class="p-6 bg-gray-100 min-h-screen">
+<div class="p-6 bg-gray-300 min-h-screen">
     <div class="max-w-4xl mx-auto">
 
         <a href="{{ route('admin.materials.index') }}" class="text-blue-600 hover:underline mb-4 inline-block">

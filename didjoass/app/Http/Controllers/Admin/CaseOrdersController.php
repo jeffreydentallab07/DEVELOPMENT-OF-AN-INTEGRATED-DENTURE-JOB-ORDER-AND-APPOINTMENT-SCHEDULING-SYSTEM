@@ -50,8 +50,6 @@ class CaseOrdersController extends Controller
         return view('admin.case-orders.show', compact('caseOrder', 'riders', 'technicians'));
     }
 
-    // ========== PICKUP MANAGEMENT ==========
-
     public function createPickup($id)
     {
         $caseOrder = CaseOrder::with('clinic')->findOrFail($id);
@@ -83,7 +81,7 @@ class CaseOrdersController extends Controller
             'pickup_date' => $validated['pickup_date'],
             'pickup_address' => $caseOrder->clinic->address,
             'status' => 'pending',
-            'notes' => $validated['notes']
+           
         ]);
 
         $caseOrder->update([
@@ -123,7 +121,6 @@ class CaseOrdersController extends Controller
             ->with('success', 'Pickup has been created and rider assigned successfully!');
     }
 
-    // ========== APPOINTMENT MANAGEMENT ==========
 
     public function createAppointment($id)
     {
@@ -159,12 +156,10 @@ class CaseOrdersController extends Controller
             'work_status' => 'pending'
         ]);
 
-        // ✅ Send email to clinic
         Mail::to($caseOrder->clinic->email)->send(
             new \App\Mail\AppointmentAssignedMail($appointment)
         );
 
-        // Send in-app notifications
         NotificationHelper::notifyUser(
             $validated['technician_id'],
             'appointment_assigned',
@@ -183,7 +178,6 @@ class CaseOrdersController extends Controller
             $appointment->appointment_id
         );
 
-        // Send SMS to clinic
         try {
             $this->smsNotifier->notifyAppointmentScheduled($appointment);
         } catch (\Exception $e) {
@@ -198,7 +192,6 @@ class CaseOrdersController extends Controller
             ->with('success', 'Appointment has been created and clinic has been notified via email!');
     }
 
-    // ========== DELIVERY MANAGEMENT ==========
 
     public function createDelivery($id)
     {
@@ -228,7 +221,7 @@ class CaseOrdersController extends Controller
         $validated = $request->validate([
             'rider_id' => 'required|exists:users,id',
             'delivery_date' => 'required|date|after_or_equal:today',
-            'notes' => 'nullable|string|max:500'
+           
         ]);
 
         $delivery = Delivery::create([
@@ -236,7 +229,7 @@ class CaseOrdersController extends Controller
             'rider_id' => $validated['rider_id'],
             'delivery_status' => 'ready to deliver',
             'delivery_date' => $validated['delivery_date'],
-            'notes' => $validated['notes']
+          
         ]);
 
         NotificationHelper::notifyUser(
@@ -266,7 +259,6 @@ class CaseOrdersController extends Controller
                 'error' => $e->getMessage()
             ]);
         }
-        // Redirect to billing creation with appointment parameter
         return redirect()
             ->route('admin.billing.create', ['appointment' => $caseOrder->latestAppointment->appointment_id])
             ->with('success', 'Delivery created successfully! Now create the billing for this appointment.');

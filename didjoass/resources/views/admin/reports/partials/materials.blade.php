@@ -5,33 +5,35 @@
             View Detailed Breakdown
         </a>
     </div>
-    <!-- Summary Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="bg-white rounded-lg shadow p-6">
-            <h3 class="text-sm text-gray-500">Total Materials</h3>
-            <p class="text-3xl font-bold text-blue-600">{{ $data['materials']->count() }}</p>
-        </div>
-        <div class="bg-white rounded-lg shadow p-6">
-            <h3 class="text-sm text-gray-500">Total Material Cost</h3>
-            <p class="text-3xl font-bold text-green-600">₱{{ number_format($data['total_material_cost'], 2) }}</p>
-        </div>
-        <div class="bg-white rounded-lg shadow p-6">
-            <h3 class="text-sm text-gray-500">Low/Out of Stock</h3>
-            <p class="text-3xl font-bold text-red-600">{{ $data['low_stock_materials']->count() }}</p>
-        </div>
+   <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div
+        class="bg-white rounded-lg shadow-md p-6 transform transition duration-300 hover:-translate-y-2 hover:shadow-xl">
+        <h3 class="text-sm text-gray-500">Total Materials</h3>
+        <p class="text-3xl font-bold text-blue-600">{{ $data['materials']->count() }}</p>
     </div>
+    <div
+        class="bg-white rounded-lg shadow-md p-6 transform transition duration-300 hover:-translate-y-2 hover:shadow-xl">
+        <h3 class="text-sm text-gray-500">Total Material Cost</h3>
+        <p class="text-3xl font-bold text-green-600">₱{{ number_format($data['total_material_cost'], 2) }}</p>
+    </div>
+    <div
+        class="bg-white rounded-lg shadow-md p-6 transform transition duration-300 hover:-translate-y-2 hover:shadow-xl">
+        <h3 class="text-sm text-gray-500">Low/Out of Stock</h3>
+        <p class="text-3xl font-bold text-red-600">{{ $data['low_stock_materials']->count() }}</p>
+    </div>
+</div>
 
-    <!-- Material Usage -->
     <div class="bg-white rounded-lg shadow p-6">
         <h3 class="text-lg font-bold text-gray-800 mb-4">Material Usage Summary</h3>
         <div class="overflow-x-auto">
             <table class="min-w-full">
-                <thead class="bg-gray-50">
+                <thead class="bg-blue-900">
                     <tr>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Material Name</th>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Total Used</th>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Unit</th>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Total Cost</th>
+                       <th class="px-4 py-2 text-left text-xs font-medium text-white uppercase">Material Name</th>
+<th class="px-4 py-2 text-left text-xs font-medium text-white uppercase">Total Used</th>
+<th class="px-4 py-2 text-left text-xs font-medium text-white uppercase">Unit</th>
+<th class="px-4 py-2 text-left text-xs font-medium text-white uppercase">Total Cost</th>
+
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200">
@@ -63,19 +65,25 @@
         </div>
     </div>
 
-    <!-- Low Stock Alert -->
     @if($data['low_stock_materials']->count() > 0)
     <div class="bg-white rounded-lg shadow p-6">
-        <h3 class="text-lg font-bold text-gray-800 mb-4">⚠️ Low Stock / Out of Stock Materials</h3>
+       <div class="flex items-center gap-2 mb-6">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+        stroke-width="2" class="w-6 h-6 text-red-600">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25 12 21m0 0-3.75-3.75M12 21V3" />
+    </svg>
+    <h3 class="text-lg font-bold text-gray-800"> Low Stock / Out of Stock Materials</h3>
+</div>
+
         <div class="overflow-x-auto">
             <table class="min-w-full">
-                <thead class="bg-gray-50">
+                <thead class="bg-blue-900">
                     <tr>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Material Name</th>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Current Quantity
-                        </th>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Unit</th>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                       <th class="px-4 py-2 text-left text-xs font-medium text-white uppercase">Material Name</th>
+<th class="px-4 py-2 text-left text-xs font-medium text-white uppercase">Current Quantity</th>
+<th class="px-4 py-2 text-left text-xs font-medium text-white uppercase">Unit</th>
+<th class="px-4 py-2 text-left text-xs font-medium text-white uppercase">Status</th>
+
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200">
@@ -101,18 +109,18 @@
     </div>
     @endif
 
-    <!-- Current Inventory -->
     <div class="bg-white rounded-lg shadow p-6">
         <h3 class="text-lg font-bold text-gray-800 mb-4">Current Inventory Status</h3>
         <div class="overflow-x-auto">
             <table class="min-w-full">
-                <thead class="bg-gray-50">
+                <thead class="bg-blue-900">
                     <tr>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Material Name</th>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Quantity</th>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Unit</th>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Unit Price</th>
-                        <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                       <th class="px-4 py-2 text-left text-xs font-medium text-white uppercase">Material Name</th>
+<th class="px-4 py-2 text-left text-xs font-medium text-white uppercase">Quantity</th>
+<th class="px-4 py-2 text-left text-xs font-medium text-white uppercase">Unit</th>
+<th class="px-4 py-2 text-left text-xs font-medium text-white uppercase">Unit Price</th>
+<th class="px-4 py-2 text-left text-xs font-medium text-white uppercase">Status</th>
+
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200">

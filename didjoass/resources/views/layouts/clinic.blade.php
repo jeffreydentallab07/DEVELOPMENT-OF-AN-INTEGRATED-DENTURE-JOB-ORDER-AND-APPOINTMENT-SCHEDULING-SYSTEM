@@ -108,9 +108,9 @@
             <div class="flex items-center gap-2">
 
                 <a href="{{ route('clinic.dashboard') }}"
-                    class="flex items-center justify-center w-8 h-8 rounded-lg hover:bg-gray-300 transition">
+                    class="flex items-center justify-center w-8 h-8 rounded-lg hover:bg-gray-300 transition ">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-300" fill="none"
-                        viewBox="0 0 24 24" stroke="currentColor">
+                        viewBox="0 0 24 24" stroke="black">
                         <path d="M3 12l9-9 9 9M4 10v10h5v-6h6v6h5V10" />
                     </svg>
                 </a>
@@ -252,12 +252,10 @@
     </div>
 
 
-    <!-- Clinic Settings Modal -->
     <div id="clinicSettingsModal"
         class="hidden fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50 p-4">
         <div class="bg-white rounded-xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto">
 
-            <!-- Header -->
             <div class="px-6 py-5 border-b border-gray-200 bg-gradient-to-r from-blue-600 to-blue-700">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center space-x-4">
@@ -293,13 +291,11 @@
                 </div>
             </div>
 
-            <!-- Form -->
             <form id="clinicSettingsForm" method="POST" action="{{ route('clinic.settings.update') }}"
                 enctype="multipart/form-data" class="p-8 space-y-6">
                 @csrf
                 @method('PUT')
 
-                <!-- Profile Section -->
                 <div class="space-y-6">
                     <div class="flex items-center gap-2 pb-2 border-b-2 border-blue-600">
                         <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -357,8 +353,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Security Section -->
                 <div class="space-y-6 pt-6 border-t border-gray-200">
                     <div class="flex items-center gap-2 pb-2 border-b-2 border-blue-600">
                         <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -393,8 +387,6 @@
                     </div>
                 </div>
             </form>
-
-            <!-- Footer -->
             <div class="px-8 py-5 bg-gray-50 border-t border-gray-200 flex justify-end gap-3 rounded-b-xl">
                 <button type="button" onclick="closeModal('clinicSettingsModal')"
                     class="px-6 py-2.5 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 font-medium transition">
@@ -420,7 +412,6 @@ function closeModal(id) {
     document.getElementById(id).classList.add('hidden'); 
 }
 
-// Preview Clinic Photo
 function previewClinicImage(event) {
     const file = event.target.files[0];
     if (file) {
@@ -432,7 +423,6 @@ function previewClinicImage(event) {
     }
 }
 
-// Mark notification as read
 function markAsRead(event, notificationId) {
     fetch(`/clinic/notifications/${notificationId}/mark-read`, {
         method: 'POST',
@@ -442,7 +432,6 @@ function markAsRead(event, notificationId) {
         }
     }).then(response => {
         if (response.ok) {
-            // Update notification count
             const countElement = document.querySelector('#notification-bell-btn span');
             if (countElement) {
                 let count = parseInt(countElement.textContent);
@@ -458,7 +447,7 @@ function markAsRead(event, notificationId) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Notification popup toggle
+   
     const bellButton = document.getElementById('notification-bell-btn');
     const popup = document.getElementById('notification-popup');
     const container = document.getElementById('notification-container');
@@ -471,7 +460,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         function openPopup() {
             popup.classList.remove('hidden');
-            // Force reflow
+       
             void popup.offsetWidth;
             popup.classList.add('scale-100', 'opacity-100');
             popup.classList.remove('scale-95', 'opacity-0');
@@ -486,14 +475,12 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // Close when clicking outside
         document.addEventListener('click', function(e) {
             if (!popup.classList.contains('hidden') && !container.contains(e.target)) {
                 closePopup();
             }
         });
 
-        // Close on escape key
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape' && !popup.classList.contains('hidden')) {
                 closePopup();
@@ -501,7 +488,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // User dropdown and settings modal
     const userBtn = document.getElementById('userDropdownBtn');
     const userMenu = document.getElementById('userDropdownMenu');
     const openSettingsBtn = document.getElementById('openClinicSettingsBtn');
@@ -528,7 +514,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Close modal on escape
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
             modal.classList.remove('flex');

@@ -3,19 +3,17 @@
 @section('page-title', 'Patient List')
 
 @section('content')
-<div class="py-12">
+<div class="p-6 bg-gray-300 min-h-screen">
   <div class="max-w-full mx-auto sm:px-6 lg:px-8">
 
-    <!-- Header -->
     <div class="mb-6 flex justify-between items-center">
-      <h1 class="text-3xl font-bold text-gray-800">👥 Patients</h1>
+      <h1 class="text-3xl font-bold text-gray-800">Patients</h1>
       <button id="openAddPatientModal"
         class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition">
         + Add Patient
       </button>
     </div>
 
-    <!-- Success/Error Messages -->
     @if(session('success'))
     <div class="mb-6 bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded">
       {{ session('success') }}
@@ -28,12 +26,10 @@
     </div>
     @endif
 
-    <!-- Search/Filter Section -->
     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
       <div class="p-6">
         <form method="GET" action="{{ route('clinic.patients.index') }}" class="grid grid-cols-1 md:grid-cols-3 gap-4">
 
-          <!-- Search -->
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">Search</label>
             <input type="text" name="search" value="{{ request('search') }}"
@@ -41,7 +37,6 @@
               class="w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 p-3">
           </div>
 
-          <!-- Doctor Filter -->
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">Assigned Doctor</label>
             <select name="dentist_id"
@@ -56,15 +51,14 @@
             </select>
           </div>
 
-          <!-- Action Buttons -->
           <div class="flex items-end gap-2">
             <button type="submit"
               class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition">
-              🔍 Filter
+              Filter
             </button>
             <a href="{{ route('clinic.patients.index') }}"
-              class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg transition">
-              Reset
+               class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg transition">
+                            Reset
             </a>
           </div>
 
@@ -72,23 +66,22 @@
       </div>
     </div>
 
-    <!-- Patients Table -->
-    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+    <div class="bg-blue-900 overflow-hidden shadow-sm sm:rounded-lg">
       <div class="overflow-x-auto">
         <table class="min-w-full divide-y divide-gray-200">
-          <thead class="bg-gray-50">
+          <thead class="bg-blue-900">
             <tr>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                 Patient Name</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                 Email</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                 Contact</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                 Address</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">
                 Assigned Doctor</th>
-              <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th class="px-6 py-3 text-center text-xs font-medium text-white uppercase tracking-wider">
                 Actions</th>
             </tr>
           </thead>
@@ -131,7 +124,7 @@
             </tr>
             @empty
             <tr>
-              <td colspan="6" class="px-6 py-12 text-center text-gray-500">
+              <td colspan="6" class="px-6 py-12 text-center text-white">
                 <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -145,7 +138,6 @@
         </table>
       </div>
 
-      <!-- Pagination -->
       @if($patients->hasPages())
       <div class="px-6 py-4 border-t">
         {{ $patients->links() }}
@@ -156,11 +148,9 @@
   </div>
 </div>
 
-<!-- Add Patient Modal -->
 <div id="addPatientModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
   <div class="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
 
-    <!-- Header -->
     <div
       class="px-6 py-5 border-b border-gray-200 flex items-center justify-between bg-gradient-to-r from-blue-600 to-blue-700">
       <h2 class="text-xl font-bold text-white">Add New Patient</h2>
@@ -171,7 +161,6 @@
       </button>
     </div>
 
-    <!-- Form -->
     <form id="addPatientForm" action="{{ route('clinic.patients.store') }}" method="POST" class="p-8 space-y-6">
       @csrf
 
@@ -215,7 +204,6 @@
       </div>
     </form>
 
-    <!-- Footer -->
     <div class="px-8 py-5 bg-gray-50 border-t border-gray-200 flex justify-end gap-3 rounded-b-xl">
       <button id="cancelAddPatient"
         class="px-6 py-2.5 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 font-medium transition">
@@ -229,12 +217,10 @@
   </div>
 </div>
 
-<!-- Edit Patient Modal -->
 <div id="editPatientModal"
   class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
   <div class="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
 
-    <!-- Header -->
     <div
       class="px-6 py-5 border-b border-gray-200 flex items-center justify-between bg-gradient-to-r from-blue-600 to-blue-700">
       <h2 class="text-xl font-bold text-white">Edit Patient</h2>
@@ -245,7 +231,6 @@
       </button>
     </div>
 
-    <!-- Form -->
     <form id="editPatientForm" method="POST" class="p-8 space-y-6">
       @csrf
       @method('PUT')
@@ -290,7 +275,6 @@
       </div>
     </form>
 
-    <!-- Footer -->
     <div class="px-8 py-5 bg-gray-50 border-t border-gray-200 flex justify-end gap-3 rounded-b-xl">
       <button onclick="closeEditPatientModal()"
         class="px-6 py-2.5 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 font-medium transition">
@@ -304,7 +288,6 @@
   </div>
 </div>
 
-<!-- Delete Patient Modal -->
 <div id="deletePatientModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
   <div class="bg-white rounded-xl shadow-2xl w-full max-w-md p-6">
     <div class="flex items-center justify-center w-12 h-12 mx-auto mb-4 bg-red-100 rounded-full">

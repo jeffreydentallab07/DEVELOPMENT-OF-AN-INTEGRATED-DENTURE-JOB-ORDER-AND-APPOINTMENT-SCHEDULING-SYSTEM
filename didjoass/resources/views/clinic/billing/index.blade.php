@@ -3,10 +3,9 @@
 @section('title', 'Billing')
 
 @section('content')
-<div class="p-6 bg-gray-100 min-h-screen">
+<div class="p-6 bg-gray-300 min-h-screen">
     <div class="max-w-7xl mx-auto">
 
-        <!-- Header -->
         <div class="mb-6">
             <h1 class="text-2xl font-bold text-gray-800">Billing</h1>
             <p class="text-gray-600">View all your billing records and payment status</p>
@@ -18,55 +17,58 @@
         </div>
         @endif
 
-        <!-- Summary Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-            <div class="bg-white rounded-lg shadow p-6">
-                <h3 class="text-gray-500 text-sm font-medium">Total Bills</h3>
-                <p class="text-3xl font-bold text-blue-600 mt-2">{{ $billings->total() }}</p>
-            </div>
-            <div class="bg-white rounded-lg shadow p-6">
-                <h3 class="text-gray-500 text-sm font-medium">Unpaid</h3>
-                <p class="text-3xl font-bold text-red-600 mt-2">
-                    {{ $billings->where('payment_status', 'unpaid')->count() }}
-                </p>
-            </div>
-            <div class="bg-white rounded-lg shadow p-6">
-                <h3 class="text-gray-500 text-sm font-medium">Partial</h3>
-                <p class="text-3xl font-bold text-yellow-600 mt-2">
-                    {{ $billings->where('payment_status', 'partial')->count() }}
-                </p>
-            </div>
-            <div class="bg-white rounded-lg shadow p-6">
-                <h3 class="text-gray-500 text-sm font-medium">Paid</h3>
-                <p class="text-3xl font-bold text-green-600 mt-2">
-                    {{ $billings->where('payment_status', 'paid')->count() }}
-                </p>
-            </div>
-        </div>
+       <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+    <div class="bg-white rounded-lg shadow p-6 transform transition-all duration-300 hover:-translate-y-2 hover:scale-105 hover:shadow-xl">
+        <h3 class="text-gray-500 text-sm font-medium">Total Bills</h3>
+        <p class="text-3xl font-bold text-blue-600 mt-2">{{ $billings->total() }}</p>
+    </div>
 
-        <!-- Filter Tabs -->
-        <div class="bg-white rounded-lg shadow mb-6">
-            <div class="flex border-b">
-                <button onclick="filterBillings('all')"
-                    class="filter-tab px-6 py-3 font-medium text-blue-600 border-b-2 border-blue-600">
-                    All
-                </button>
-                <button onclick="filterBillings('unpaid')"
-                    class="filter-tab px-6 py-3 font-medium text-gray-600 hover:text-blue-600 border-b-2 border-transparent">
-                    Unpaid
-                </button>
-                <button onclick="filterBillings('partial')"
-                    class="filter-tab px-6 py-3 font-medium text-gray-600 hover:text-blue-600 border-b-2 border-transparent">
-                    Partial
-                </button>
-                <button onclick="filterBillings('paid')"
-                    class="filter-tab px-6 py-3 font-medium text-gray-600 hover:text-blue-600 border-b-2 border-transparent">
-                    Paid
-                </button>
-            </div>
-        </div>
+    <div class="bg-white rounded-lg shadow p-6 transform transition-all duration-300 hover:-translate-y-2 hover:scale-105 hover:shadow-xl">
+        <h3 class="text-gray-500 text-sm font-medium">Unpaid</h3>
+        <p class="text-3xl font-bold text-red-600 mt-2">
+            {{ $billings->where('payment_status', 'unpaid')->count() }}
+        </p>
+    </div>
 
-        <!-- Billing Cards -->
+    <div class="bg-white rounded-lg shadow p-6 transform transition-all duration-300 hover:-translate-y-2 hover:scale-105 hover:shadow-xl">
+        <h3 class="text-gray-500 text-sm font-medium">Partial</h3>
+        <p class="text-3xl font-bold text-yellow-600 mt-2">
+            {{ $billings->where('payment_status', 'partial')->count() }}
+        </p>
+    </div>
+
+    <div class="bg-white rounded-lg shadow p-6 transform transition-all duration-300 hover:-translate-y-2 hover:scale-105 hover:shadow-xl">
+        <h3 class="text-gray-500 text-sm font-medium">Paid</h3>
+        <p class="text-3xl font-bold text-green-600 mt-2">
+            {{ $billings->where('payment_status', 'paid')->count() }}
+        </p>
+    </div>
+</div>
+
+       <div class="bg-blue-900 rounded-lg shadow mb-6">
+    <div class="flex border-b">
+        <button onclick="filterBillings('all')"
+            class="filter-tab px-6 py-3 font-medium text-white border-b-2 border-blue-600">
+            All
+        </button>
+
+        <button onclick="filterBillings('unpaid')"
+            class="filter-tab px-6 py-3 font-medium text-white hover:text-blue-300 border-b-2 border-transparent">
+            Unpaid
+        </button>
+
+        <button onclick="filterBillings('partial')"
+            class="filter-tab px-6 py-3 font-medium text-white hover:text-blue-300 border-b-2 border-transparent">
+            Partial
+        </button>
+
+        <button onclick="filterBillings('paid')"
+            class="filter-tab px-6 py-3 font-medium text-white hover:text-blue-300 border-b-2 border-transparent">
+            Paid
+        </button>
+    </div>
+</div>
+
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @forelse($billings as $billing)
             <div class="billing-card bg-white rounded-lg shadow hover:shadow-lg transition"

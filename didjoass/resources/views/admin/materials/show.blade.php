@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="p-6 bg-gray-100 min-h-screen">
+<div class="p-6 bg-gray-300 min-h-screen">
     <div class="max-w-4xl mx-auto">
 
         <a href="{{ route('admin.materials.index') }}" class="text-blue-600 hover:underline mb-4 inline-block">
@@ -9,7 +9,7 @@
         </a>
 
         <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-            <!-- Header -->
+        
             <div class="bg-gradient-to-r from-blue-900 to-blue-700 p-6 text-white">
                 <div class="flex items-center justify-between">
                     <div>
@@ -25,7 +25,6 @@
                 </div>
             </div>
 
-            <!-- Stats Cards -->
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4 p-6 bg-gray-50">
                 <div class="bg-white p-4 rounded-lg shadow">
                     <p class="text-sm text-gray-600">Current Stock</p>
@@ -47,7 +46,6 @@
                 </div>
             </div>
 
-            <!-- Material Details -->
             <div class="p-6">
                 <h2 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">Material Details</h2>
 
@@ -93,7 +91,6 @@
                 @endif
             </div>
 
-            <!-- Action Buttons -->
             <div class="p-6 bg-gray-50 border-t flex gap-3">
                 <button onclick="openEditModal()"
                     class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">
@@ -112,7 +109,6 @@
             </div>
         </div>
 
-        <!-- Activity Timeline -->
         <div class="bg-white rounded-lg shadow-lg mt-6 p-6">
             <h2 class="text-xl font-bold text-gray-800 mb-4">Activity Timeline</h2>
 
@@ -159,7 +155,6 @@
         </div>
     </div>
 </div>
-<!-- Edit Modal -->
 <div id="editModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50 p-4">
     <div class="bg-white rounded-xl shadow-2xl w-full max-w-2xl overflow-hidden relative">
         <form action="{{ route('admin.materials.update', $material->material_id) }}" method="POST">
@@ -224,7 +219,6 @@
         </form>
     </div>
 </div>
-<!-- Delete Confirmation Modal -->
 <div id="deleteModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
     <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4">
         <h3 class="text-xl font-bold text-gray-800 mb-4">Confirm Delete</h3>

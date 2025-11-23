@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="p-6 bg-gray-100 min-h-screen">
+<div class="p-6 bg-gray-300 min-h-screen">
     <div class="max-w-4xl mx-auto">
 
         <a href="{{ route('admin.technicians.index') }}" class="text-blue-600 hover:underline mb-4 inline-block">
@@ -9,7 +9,7 @@
         </a>
 
         <div class="bg-white rounded-lg shadow p-6">
-            <!-- Header with Photo -->
+   
             <div class="flex items-center gap-6 mb-6 pb-6 border-b">
                 <img src="{{ $technician->photo ? asset('storage/' . $technician->photo) : asset('images/default-avatar.png') }}"
                     alt="{{ $technician->name }}" class="w-24 h-24 rounded-full object-cover border-4 border-gray-200">
@@ -20,7 +20,6 @@
                 </div>
             </div>
 
-            <!-- Stats -->
             <div class="grid grid-cols-3 gap-4 mb-6">
                 <div class="bg-blue-50 p-4 rounded-lg">
                     <p class="text-sm text-gray-600">Total Appointments</p>
@@ -39,8 +38,6 @@
                     </p>
                 </div>
             </div>
-
-            <!-- Recent Appointments -->
             <h2 class="text-xl font-bold mb-4">Recent Appointments</h2>
             <div class="space-y-2">
                 @forelse($technician->appointments->take(10) as $appointment)

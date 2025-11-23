@@ -16,10 +16,8 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-            <!-- Main Content -->
             <div class="lg:col-span-2 space-y-6">
 
-                <!-- Billing Info Card -->
                 <div class="bg-white rounded-lg shadow-lg overflow-hidden">
                     <div class="bg-gradient-to-r from-green-600 to-green-500 p-6 text-white">
                         <div class="flex items-center justify-between">
@@ -85,7 +83,6 @@
                     </div>
                 </div>
 
-                <!-- Clinic & Patient Info -->
                 <div class="bg-white rounded-lg shadow p-6">
                     <h2 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">Clinic & Patient Information</h2>
 
@@ -119,7 +116,6 @@
                     </div>
                 </div>
 
-                <!-- Case Order Details -->
                 <div class="bg-white rounded-lg shadow p-6">
                     <h2 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">Case Order Details</h2>
 
@@ -148,7 +144,6 @@
                     </div>
                 </div>
 
-                <!-- Materials Used -->
                 @if($billing->appointment->materialUsages->count() > 0)
                 <div class="bg-white rounded-lg shadow p-6">
                     <h2 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">Materials Used</h2>
@@ -191,60 +186,91 @@
 
             </div>
 
-            <!-- Sidebar -->
             <div class="space-y-6">
 
-                <!-- Quick Actions -->
                 <div class="bg-white rounded-lg shadow p-6">
                     <h3 class="text-lg font-bold text-gray-800 mb-4">Actions</h3>
 
                     <div class="space-y-3">
-                        <!-- Print Invoice -->
-                        <a href="{{ route('admin.billing.invoice', $billing->id) }}" target="_blank"
-                            class="flex items-center justify-center gap-2 w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition">
-                            Print Invoice
-                        </a>
+    <!-- Print Invoice -->
+    <a href="{{ route('admin.billing.invoice', $billing->id) }}" target="_blank"
+       class="flex items-center justify-center gap-2 w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition">
+        <!-- Printer Icon -->
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5h20v5a2 2 0 01-2 2h-2M6 14h12v7H6v-7z"/>
+        </svg>
+        Print Invoice
+    </a>
 
-                        <!-- Edit Billing -->
-                        <a href="{{ route('admin.billing.edit', $billing->id) }}"
-                            class="block w-full bg-blue-600 text-white text-center py-2 rounded-lg hover:bg-blue-700 transition">
-                            Edit Billing
-                        </a>
+    <!-- Edit Billing -->
+    <a href="{{ route('admin.billing.edit', $billing->id) }}"
+       class="flex items-center justify-center gap-2 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">
+        <!-- Pencil Icon -->
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536M4 20h4l11-11-4-4L4 16v4z"/>
+        </svg>
+        Edit Billing
+    </a>
 
-                        <!-- View Appointment -->
-                        <a href="{{ route('admin.appointments.show', $billing->appointment_id) }}"
-                            class="block w-full bg-purple-600 text-white text-center py-2 rounded-lg hover:bg-purple-700 transition">
-                            View Appointment
-                        </a>
+    <!-- View Appointment -->
+    <a href="{{ route('admin.appointments.show', $billing->appointment_id) }}"
+       class="flex items-center justify-center gap-2 w-full bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700 transition">
+       
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+        </svg>
+        View Appointment
+    </a>
 
-                        <!-- View Case Order -->
-                        <a href="{{ route('admin.case-orders.show', $billing->appointment->case_order_id) }}"
-                            class="block w-full bg-indigo-600 text-white text-center py-2 rounded-lg hover:bg-indigo-700 transition">
-                            View Case Order
-                        </a>
+    <!-- View Case Order -->
+    <a href="{{ route('admin.case-orders.show', $billing->appointment->case_order_id) }}"
+       class="flex items-center justify-center gap-2 w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition">
+        <!-- Eye Icon -->
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+        </svg>
+        View Case Order
+    </a>
 
-                        <!-- Create Delivery (if completed and no delivery exists) -->
-                        @if($billing->appointment->work_status === 'completed' && !$billing->appointment->delivery)
-                        <a href="{{ route('admin.delivery.create', ['appointment' => $billing->appointment_id]) }}"
-                            class="block w-full bg-orange-600 text-white text-center py-2 rounded-lg hover:bg-orange-700 transition">
-                            Create Delivery
-                        </a>
-                        @endif
+    <!-- Create Delivery (if completed and no delivery exists) -->
+    @if($billing->appointment->work_status === 'completed' && !$billing->appointment->delivery)
+    <a href="{{ route('admin.delivery.create', ['appointment' => $billing->appointment_id]) }}"
+       class="flex items-center justify-center gap-2 w-full bg-orange-600 text-white py-2 rounded-lg hover:bg-orange-700 transition">
+        <!-- Truck Icon -->
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 17H7a2 2 0 01-2-2V7a2 2 0 012-2h10l4 4v8a2 2 0 01-2 2h-2"/>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 13h18"/>
+        </svg>
+        Create Delivery
+    </a>
+    @endif
 
-                        <!-- View Delivery (if exists) -->
-                        @if($billing->appointment->delivery)
-                        <a href="{{ route('admin.delivery.show', $billing->appointment->delivery->delivery_id) }}"
-                            class="block w-full bg-purple-600 text-white text-center py-2 rounded-lg hover:bg-purple-700 transition">
-                            View Delivery
-                        </a>
-                        @endif
+    <!-- View Delivery (if exists) -->
+    @if($billing->appointment->delivery)
+    <a href="{{ route('admin.delivery.show', $billing->appointment->delivery->delivery_id) }}"
+       class="flex items-center justify-center gap-2 w-full bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700 transition">
+        <!-- Eye Icon -->
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+        </svg>
+        View Delivery
+    </a>
+    @endif
 
-                        <!-- Delete -->
-                        <button onclick="confirmDelete()"
-                            class="block w-full bg-red-600 text-white text-center py-2 rounded-lg hover:bg-red-700 transition">
-                            Delete Billing
-                        </button>
-                    </div>
+    <!-- Delete -->
+    <button onclick="confirmDelete()"
+       class="flex items-center justify-center gap-2 w-full bg-red-600 text-white py-2 rounded-lg hover:bg-red-700 transition">
+        <!-- Trash Icon -->
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5-4h4m-4 0a2 2 0 00-2 2v0a2 2 0 002 2h4a2 2 0 002-2v0a2 2 0 00-2-2m-4 0V3"/>
+        </svg>
+        Delete Billing
+    </button>
+</div>
+
                 </div>
 
                 <!-- Payment Summary -->

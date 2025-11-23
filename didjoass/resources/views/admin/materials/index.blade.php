@@ -5,27 +5,29 @@
 @section('content')
 <div class="p-6 space-y-6 bg-gray-300 min-h-screen">
 
-    <!-- Stats Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div class="bg-white rounded-lg shadow p-6">
-            <h3 class="text-gray-500 text-sm font-medium">Total Materials</h3>
-            <p class="text-3xl font-bold text-blue-600 mt-2">{{ $totalMaterials }}</p>
-        </div>
-        <div class="bg-white rounded-lg shadow p-6">
-            <h3 class="text-gray-500 text-sm font-medium">Total Inventory Value</h3>
-            <p class="text-3xl font-bold text-green-600 mt-2">₱{{ number_format($totalValue, 2) }}</p>
-        </div>
-        <div class="bg-white rounded-lg shadow p-6">
-            <h3 class="text-gray-500 text-sm font-medium">Low Stock Items</h3>
-            <p class="text-3xl font-bold text-yellow-600 mt-2">{{ $lowStockCount }}</p>
-        </div>
-        <div class="bg-white rounded-lg shadow p-6">
-            <h3 class="text-gray-500 text-sm font-medium">Out of Stock</h3>
-            <p class="text-3xl font-bold text-red-600 mt-2">{{ $outOfStockCount }}</p>
-        </div>
+   <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+    <div class="bg-white rounded-lg shadow p-6 transform transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:scale-105">
+        <h3 class="text-gray-500 text-sm font-medium">Total Materials</h3>
+        <p class="text-3xl font-bold text-blue-600 mt-2">{{ $totalMaterials }}</p>
     </div>
 
-    <!-- Add Material Button -->
+    <div class="bg-white rounded-lg shadow p-6 transform transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:scale-105">
+        <h3 class="text-gray-500 text-sm font-medium">Total Inventory Value</h3>
+        <p class="text-3xl font-bold text-green-600 mt-2">₱{{ number_format($totalValue, 2) }}</p>
+    </div>
+
+    <div class="bg-white rounded-lg shadow p-6 transform transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:scale-105">
+        <h3 class="text-gray-500 text-sm font-medium">Low Stock Items</h3>
+        <p class="text-3xl font-bold text-yellow-600 mt-2">{{ $lowStockCount }}</p>
+    </div>
+
+    <div class="bg-white rounded-lg shadow p-6 transform transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:scale-105">
+        <h3 class="text-gray-500 text-sm font-medium">Out of Stock</h3>
+        <p class="text-3xl font-bold text-red-600 mt-2">{{ $outOfStockCount }}</p>
+    </div>
+</div>
+
+
     <button id="openAddMaterialModal"
         class="bg-green-500 text-white px-5 py-2 rounded font-semibold hover:bg-green-600 transition">
         + Add Material
@@ -43,7 +45,6 @@
     </div>
     @endif
 
-    <!-- Materials Table -->
     <div class="overflow-x-auto rounded-xl shadow-lg mt-4">
         <table class="min-w-full border-separate border-spacing-0 bg-white">
             <thead>
@@ -82,7 +83,7 @@
                         </div>
                     </td>
                     <td class="px-6 py-3 flex gap-2">
-                        <!-- View Button -->
+                     
                         <a href="{{ route('admin.materials.show', $material->material_id) }}"
                             class="px-2 py-1 bg-gray-500 text-white rounded hover:bg-gray-600 transition"
                             aria-label="View Material">
@@ -95,7 +96,6 @@
                             </svg>
                         </a>
 
-                        <!-- Edit Button -->
                         <button
                             onclick="openEditMaterialModal({{ $material->material_id }}, '{{ addslashes($material->material_name) }}', '{{ addslashes($material->description ?? '') }}', {{ $material->quantity }}, '{{ $material->unit }}', {{ $material->price }}, '{{ addslashes($material->supplier ?? '') }}')"
                             class="px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
@@ -137,7 +137,6 @@
     </div>
 </div>
 
-<!-- Add Material Modal -->
 <div id="addMaterialModal"
     class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50 p-4">
     <div class="bg-white rounded-xl shadow-2xl w-full max-w-2xl overflow-hidden relative">
