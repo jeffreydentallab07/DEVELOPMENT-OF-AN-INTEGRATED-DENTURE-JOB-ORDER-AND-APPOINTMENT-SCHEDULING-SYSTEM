@@ -13,7 +13,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
-use Barryvdh\DomPDF\Facade\Pdf;
+use Spatie\Browsershot\Browsershot;
+use Illuminate\Support\Facades\View;
 
 class ReportsController extends Controller
 {
@@ -45,25 +46,39 @@ class ReportsController extends Controller
                 $data = $this->getDeliveryPerformanceReport($dateFrom, $dateTo);
                 break;
             default:
-                $data = $this->getOverviewReport();
+                $data = $this->getOverviewReport($dateFrom, $dateTo);
                 break;
         }
 
         return view('admin.reports.index', compact('reportType', 'dateFrom', 'dateTo', 'data'));
     }
 
-    private function getOverviewReport()
+    private function getOverviewReport($dateFrom = null, $dateTo = null)
     {
+        // If no dates provided, use all-time data
+        $query = function ($q) use ($dateFrom, $dateTo) {
+            if ($dateFrom && $dateTo) {
+                return $q->whereBetween('created_at', [$dateFrom, $dateTo]);
+            }
+            return $q;
+        };
+
         return [
-            'total_case_orders' => CaseOrder::count(),
-            'completed_cases' => CaseOrder::where('status', 'completed')->count(),
-            'pending_cases' => CaseOrder::whereIn('status', ['initial', 'for pickup', 'for appointment', 'in-progress'])->count(),
-            'total_appointments' => Appointment::count(),
-            'completed_appointments' => Appointment::where('work_status', 'completed')->count(),
-            'total_revenue' => Billing::where('payment_status', 'paid')->sum('total_amount'),
-            'pending_revenue' => Billing::where('payment_status', 'unpaid')->sum('total_amount'),
-            'total_deliveries' => Delivery::count(),
-            'completed_deliveries' => Delivery::where('delivery_status', 'delivered')->count(),
+            'total_case_orders' => CaseOrder::when($dateFrom && $dateTo, $query)->count(),
+            'completed_cases' => CaseOrder::when($dateFrom && $dateTo, $query)
+                ->where('status', 'completed')->count(),
+            'pending_cases' => CaseOrder::when($dateFrom && $dateTo, $query)
+                ->whereIn('status', ['initial', 'for pickup', 'for appointment', 'in-progress'])->count(),
+            'total_appointments' => Appointment::when($dateFrom && $dateTo, $query)->count(),
+            'completed_appointments' => Appointment::when($dateFrom && $dateTo, $query)
+                ->where('work_status', 'completed')->count(),
+            'total_revenue' => Billing::when($dateFrom && $dateTo, $query)
+                ->where('payment_status', 'paid')->sum('total_amount'),
+            'pending_revenue' => Billing::when($dateFrom && $dateTo, $query)
+                ->where('payment_status', 'unpaid')->sum('total_amount'),
+            'total_deliveries' => Delivery::when($dateFrom && $dateTo, $query)->count(),
+            'completed_deliveries' => Delivery::when($dateFrom && $dateTo, $query)
+                ->where('delivery_status', 'delivered')->count(),
             'total_clinics' => Clinic::count(),
             'total_technicians' => User::where('role', 'technician')->count(),
             'total_riders' => User::where('role', 'rider')->count(),
@@ -223,23 +238,20 @@ class ReportsController extends Controller
                     ->whereBetween('created_at', [$dateFrom, $dateTo]);
             }])
             ->with(['appointments' => function ($query) use ($dateFrom, $dateTo) {
-                $query->with('materialUsages.material')
+                $query->with('materialUsages')
                     ->whereBetween('created_at', [$dateFrom, $dateTo]);
             }])
             ->having('total_appointments', '>', 0)
-            ->orderBy('completed_appointments', 'desc')
+            ->orderBy('total_appointments', 'desc')
             ->get();
 
-        // Calculate materials used for each technician
+        // Calculate materials used
         $technicianStats = $technicianStats->map(function ($technician) {
             $materialsUsed = 0;
-            $totalCost = 0;
             foreach ($technician->appointments as $appointment) {
                 $materialsUsed += $appointment->materialUsages->count();
-                $totalCost += $appointment->total_material_cost;
             }
             $technician->materials_used = $materialsUsed;
-            $technician->total_material_cost = $totalCost;
             return $technician;
         });
 
@@ -262,13 +274,12 @@ class ReportsController extends Controller
                 $query->whereBetween('created_at', [$dateFrom, $dateTo]);
             }])
             ->withCount(['pickups as completed_pickups' => function ($query) use ($dateFrom, $dateTo) {
-                $query->where('status', 'picked-up')
+                $query->where('pickup_status', 'completed')
                     ->whereBetween('created_at', [$dateFrom, $dateTo]);
             }])
-            ->get()
-            ->filter(function ($rider) {
-                return $rider->total_deliveries > 0 || $rider->total_pickups > 0;
-            });
+            ->having('total_deliveries', '>', 0)
+            ->orderBy('total_deliveries', 'desc')
+            ->get();
 
         $deliveryStatusBreakdown = Delivery::whereBetween('created_at', [$dateFrom, $dateTo])
             ->select('delivery_status', DB::raw('count(*) as count'))
@@ -283,9 +294,12 @@ class ReportsController extends Controller
         ];
     }
 
+    /**
+     * Export report as PDF using Browsershot (renders exactly like the print page)
+     */
     public function exportPdf(Request $request)
     {
-        $reportType = $request->get('type', 'overview');
+        $reportType = $request->get('reportType', 'overview');
         $dateFrom = $request->get('date_from', now()->startOfMonth()->format('Y-m-d'));
         $dateTo = $request->get('date_to', now()->format('Y-m-d'));
 
@@ -311,28 +325,48 @@ class ReportsController extends Controller
                 $data = $this->getDeliveryPerformanceReport($dateFrom, $dateTo);
                 break;
             default:
-                $data = $this->getOverviewReport();
+                $data = $this->getOverviewReport($dateFrom, $dateTo);
                 break;
         }
 
-        $pdf = Pdf::loadView('admin.reports.pdf', [
+        // Render the print view with all Tailwind CSS
+        $html = View::make('admin.reports.print-pdf', [
             'reportType' => $reportType,
             'dateFrom' => $dateFrom,
             'dateTo' => $dateTo,
-            'data' => $data,
-            'generatedAt' => now()->format('M d, Y h:i A')
-        ]);
+            'data' => $data
+        ])->render();
 
-        return $pdf->download('report-' . $reportType . '-' . date('Y-m-d') . '.pdf');
+        // Create temp directory if it doesn't exist
+        $tempDir = storage_path('app/temp');
+        if (!file_exists($tempDir)) {
+            mkdir($tempDir, 0755, true);
+        }
+
+        // Generate PDF using Browsershot (renders like Chrome browser)
+        $pdfPath = $tempDir . DIRECTORY_SEPARATOR . 'report-' . $reportType . '-' . time() . '.pdf';
+
+        // Determine orientation and paper size based on report type
+        $landscape = in_array($reportType, ['clinic-performance', 'technician-performance', 'delivery-performance', 'case-orders']);
+        $paperWidth = $landscape ? 420 : 297;  // A3 landscape or A4 portrait
+        $paperHeight = $landscape ? 297 : 210;
+
+        Browsershot::html($html)
+            ->setOption('landscape', $landscape)
+            ->paperSize($paperWidth, $paperHeight)
+            ->margins(10, 10, 10, 10)
+            ->waitUntilNetworkIdle()
+            ->save($pdfPath);
+
+        return response()->download($pdfPath)->deleteFileAfterSend(true);
     }
-
 
     /**
      * Show print preview of report (opens in new tab)
      */
     public function print(Request $request)
     {
-        $reportType = $request->get('type', 'overview');
+        $reportType = $request->get('reportType', 'overview');
         $dateFrom = $request->get('date_from', now()->startOfMonth()->format('Y-m-d'));
         $dateTo = $request->get('date_to', now()->format('Y-m-d'));
 
@@ -358,7 +392,7 @@ class ReportsController extends Controller
                 $data = $this->getDeliveryPerformanceReport($dateFrom, $dateTo);
                 break;
             default:
-                $data = $this->getOverviewReport();
+                $data = $this->getOverviewReport($dateFrom, $dateTo);
                 break;
         }
 
@@ -369,7 +403,6 @@ class ReportsController extends Controller
             'data' => $data
         ]);
     }
-
 
     // Case Orders Detail
     public function caseOrdersDetail(Request $request)
@@ -399,14 +432,24 @@ class ReportsController extends Controller
 
         $data = $this->getCaseOrdersReport($dateFrom, $dateTo);
 
-        $pdf = Pdf::loadView('admin.reports.pdf.case-orders-detail', [
-            'dateFrom' => $dateFrom,
-            'dateTo' => $dateTo,
-            'data' => $data,
-            'generatedAt' => now()->format('M d, Y h:i A')
-        ])->setPaper('a4', 'landscape');
+        $html = View::make('admin.reports.details.print-case-orders', compact('dateFrom', 'dateTo', 'data'))->render();
 
-        return $pdf->download('case-orders-report-' . date('Y-m-d') . '.pdf');
+        // Create temp directory if it doesn't exist
+        $tempDir = storage_path('app/temp');
+        if (!file_exists($tempDir)) {
+            mkdir($tempDir, 0755, true);
+        }
+
+        $pdfPath = $tempDir . DIRECTORY_SEPARATOR . 'case-orders-report-' . time() . '.pdf';
+
+        Browsershot::html($html)
+            ->setOption('landscape', true)
+            ->paperSize(420, 297) // A3 landscape
+            ->margins(10, 10, 10, 10)
+            ->waitUntilNetworkIdle()
+            ->save($pdfPath);
+
+        return response()->download($pdfPath)->deleteFileAfterSend(true);
     }
 
     // Revenue Detail
@@ -419,7 +462,6 @@ class ReportsController extends Controller
 
         return view('admin.reports.details.revenue', compact('dateFrom', 'dateTo', 'data'));
     }
-
 
     public function printRevenueDetail(Request $request)
     {
@@ -438,14 +480,24 @@ class ReportsController extends Controller
 
         $data = $this->getRevenueReport($dateFrom, $dateTo);
 
-        $pdf = Pdf::loadView('admin.reports.pdf.revenue-detail', [
-            'dateFrom' => $dateFrom,
-            'dateTo' => $dateTo,
-            'data' => $data,
-            'generatedAt' => now()->format('M d, Y h:i A')
-        ])->setPaper('a4', 'landscape');
+        $html = View::make('admin.reports.details.print-revenue', compact('dateFrom', 'dateTo', 'data'))->render();
 
-        return $pdf->download('revenue-report-' . date('Y-m-d') . '.pdf');
+        // Create temp directory if it doesn't exist
+        $tempDir = storage_path('app/temp');
+        if (!file_exists($tempDir)) {
+            mkdir($tempDir, 0755, true);
+        }
+
+        $pdfPath = $tempDir . DIRECTORY_SEPARATOR . 'revenue-report-' . time() . '.pdf';
+
+        Browsershot::html($html)
+            ->setOption('landscape', true)
+            ->paperSize(420, 297) // A3 landscape
+            ->margins(10, 10, 10, 10)
+            ->waitUntilNetworkIdle()
+            ->save($pdfPath);
+
+        return response()->download($pdfPath)->deleteFileAfterSend(true);
     }
 
     // Materials Detail
@@ -476,13 +528,23 @@ class ReportsController extends Controller
 
         $data = $this->getMaterialsReport($dateFrom, $dateTo);
 
-        $pdf = Pdf::loadView('admin.reports.pdf.materials-detail', [
-            'dateFrom' => $dateFrom,
-            'dateTo' => $dateTo,
-            'data' => $data,
-            'generatedAt' => now()->format('M d, Y h:i A')
-        ])->setPaper('a4', 'portrait');
+        $html = View::make('admin.reports.details.print-materials', compact('dateFrom', 'dateTo', 'data'))->render();
 
-        return $pdf->download('materials-report-' . date('Y-m-d') . '.pdf');
+        // Create temp directory if it doesn't exist
+        $tempDir = storage_path('app/temp');
+        if (!file_exists($tempDir)) {
+            mkdir($tempDir, 0755, true);
+        }
+
+        $pdfPath = $tempDir . DIRECTORY_SEPARATOR . 'materials-report-' . time() . '.pdf';
+
+        Browsershot::html($html)
+            ->setOption('landscape', false)
+            ->paperSize(297, 210) // A4 portrait
+            ->margins(10, 10, 10, 10)
+            ->waitUntilNetworkIdle()
+            ->save($pdfPath);
+
+        return response()->download($pdfPath)->deleteFileAfterSend(true);
     }
 }

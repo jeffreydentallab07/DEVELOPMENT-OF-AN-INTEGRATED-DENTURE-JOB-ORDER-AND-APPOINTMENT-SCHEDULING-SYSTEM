@@ -21,7 +21,7 @@
         </button>
     </div>
 
-   
+
     <div class="bg-white rounded-lg shadow p-6">
         <form method="GET" action="{{ route('admin.reports.index') }}" class="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div>
@@ -32,8 +32,9 @@
                     <option value="case-orders" {{ $reportType==='case-orders' ? 'selected' : '' }}>Case Orders</option>
                     <option value="revenue" {{ $reportType==='revenue' ? 'selected' : '' }}>Revenue</option>
                     <option value="materials" {{ $reportType==='materials' ? 'selected' : '' }}>Materials</option>
-                    <option value="clinic-performance" {{ $reportType==='clinic-performance' ? 'selected' : '' }}>Clinics
-                      </option>
+                    <option value="clinic-performance" {{ $reportType==='clinic-performance' ? 'selected' : '' }}>
+                        Clinics
+                    </option>
                     <option value="technician-performance" {{ $reportType==='technician-performance' ? 'selected' : ''
                         }}>Technicians</option>
                     <option value="delivery-performance" {{ $reportType==='delivery-performance' ? 'selected' : '' }}>
@@ -80,12 +81,18 @@
 
 <script>
     function exportReport() {
-  
-    const params = new URLSearchParams(window.location.search);
-    
-    const printUrl = '{{ route("admin.reports.print") }}?' + params.toString();
-    
-    window.open(printUrl, '_blank');
-}
+        // Get current filter values
+        const params = new URLSearchParams(window.location.search);
+        
+        // Change 'type' to 'reportType' for the print route
+        const reportType = params.get('type') || 'overview';
+        const dateFrom = params.get('date_from') || '';
+        const dateTo = params.get('date_to') || '';
+        
+        // Build the print URL with correct parameters
+        const printUrl = `{{ route("admin.reports.print") }}?reportType=${reportType}&date_from=${dateFrom}&date_to=${dateTo}`;
+        
+        window.open(printUrl, '_blank');
+    }
 </script>
 @endsection
