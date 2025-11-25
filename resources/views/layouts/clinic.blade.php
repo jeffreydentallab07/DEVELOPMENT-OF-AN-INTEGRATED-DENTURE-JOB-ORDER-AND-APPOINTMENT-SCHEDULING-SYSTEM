@@ -11,18 +11,32 @@
         .notification-popup-transition {
             transition: transform 0.2s ease-out, opacity 0.2s ease-out;
         }
+
+        .sidebar-transition {
+            transition: transform 0.3s ease-in-out;
+        }
     </style>
 </head>
 
 <body class="h-screen flex bg-white text-[12px]">
 
+    <!-- Mobile Overlay -->
+    <div id="mobile-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-30 hidden md:hidden"></div>
 
-    <aside class="w-48 bg-blue-900 text-white flex flex-col fixed top-0 left-0 h-full">
-        <div class="h-20 px-3 border-b border-blue-700 flex items-center justify-center">
+    <!-- Sidebar -->
+    <aside id="sidebar"
+        class="w-48 bg-blue-900 text-white flex flex-col fixed top-0 left-0 h-full z-40 transform -translate-x-full md:translate-x-0 sidebar-transition">
+        <div class="h-20 px-3 border-b border-blue-700 flex items-center justify-between">
             <img src="{{ asset('images/logo2.png') }}" alt="Logo" class="h-12 object-contain">
+            <!-- Close button (mobile only) -->
+            <button id="close-sidebar-btn" class="md:hidden text-white p-2 hover:bg-blue-800 rounded">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
         </div>
 
-        <nav class="mt-4 flex-grow space-y-1">
+        <nav class="mt-4 flex-grow space-y-1 overflow-y-auto">
             <a href="{{ route('clinic.case-orders.index') }}"
                 class="flex items-center space-x-2 p-2 rounded-l-lg hover:bg-gray-300 hover:text-blue-900 {{ request()->routeIs('clinic.case-orders.*') ? 'bg-gray-300 text-blue-900 font-semibold' : 'text-indigo-300' }}">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
@@ -92,11 +106,21 @@
         </div>
     </aside>
 
-    <div class="flex-grow flex flex-col h-full ml-48">
+    <!-- Main Content -->
+    <div class="flex-grow flex flex-col h-full md:ml-48">
 
-        <header class="bg-white p-3 flex items-center justify-between shadow-md z-10">
+        <!-- Header -->
+        <header class="bg-white p-3 flex items-center justify-between md:justify-end shadow-md z-10">
 
-            <div class="flex items-center gap-2 border border-gray-300 rounded-lg w-96 p-2 bg-white">
+            <!-- Hamburger Menu (Mobile Only) -->
+            <button id="hamburger-btn" class="md:hidden text-gray-700 p-2 hover:bg-gray-100 rounded">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+
+            <!-- Search Bar (Hidden on small screens) -->
+            <div class="hidden lg:flex items-center gap-2 border border-gray-300 rounded-lg w-96 p-2 bg-white">
                 <svg class="w-4 h-4 text-gray-300 mr-2" fill="currentColor" viewBox="0 0 24 24">
                     <path
                         d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5z" />
@@ -132,7 +156,7 @@
                     </button>
 
                     <div id="notification-popup"
-                        class="absolute right-0 mt-3 w-80 bg-white rounded-xl shadow-2xl border border-gray-300 hidden z-40 origin-top-right notification-popup-transition scale-95 opacity-0">
+                        class="absolute right-0 mt-3 w-80 max-w-[calc(100vw-2rem)] bg-white rounded-xl shadow-2xl border border-gray-300 hidden z-40 origin-top-right notification-popup-transition scale-95 opacity-0">
                         <div
                             class="p-4 border-b border-gray-300 flex justify-between items-center bg-gray-50 rounded-t-xl">
                             <h5 class="text-base font-semibold text-gray-700">Notifications</h5>
@@ -163,86 +187,40 @@
                                 <svg class="w-12 h-12 mx-auto mb-2 text-gray-300" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M15 17h5l-1.405-1.405A2.032 2.032 0 0 1 18 14.158V11a6 6 0 1 0-12 0v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 1 1-6 0v-1m6 0H9" />
+                                        d="M15 17h5l-1.405-1.405A2.032 2.032 0 0 1 18 14.158V11a6 6 0 1 0-12 0v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 1 1-6 0v-1m6 0H9">
+                                    </path>
                                 </svg>
-                                <p class="text-sm">No notifications yet</p>
+                                <p class="text-sm">No new notifications</p>
                             </div>
                             @endif
                         </div>
-
-                        @if(isset($clinicNotifications) && $clinicNotifications->count() > 0)
-                        <div class="p-2 border-t border-gray-200">
-                            <a href="{{ route('clinic.notifications.index') }}"
-                                class="block text-center text-blue-600 hover:text-blue-800 text-sm font-medium py-2">
-                                View All Notifications
-                            </a>
-                        </div>
-                        @endif
                     </div>
                 </div>
 
 
-                <div id="userDropdownContainer" class="relative">
+                <div class="relative">
                     <button id="userDropdownBtn"
-                        class="flex items-center space-x-1 rounded-lg hover:bg-gray-300 transition p-1">
-                        @if(Auth::guard('clinic')->user()->profile_photo)
-                        <img src="{{ asset('storage/' . Auth::guard('clinic')->user()->profile_photo) }}"
-                            alt="User Photo" class="w-6 h-6 rounded-full object-cover">
-                        @else
+                        class="flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-gray-100 text-[12px]">
                         <div
-                            class="w-6 h-6 rounded-full bg-indigo-500 flex items-center justify-center text-white text-xs">
-                            {{ strtoupper(substr(Auth::guard('clinic')->user()->username, 0, 1)) }}
+                            class="w-6 h-6 bg-blue-600 text-white flex items-center justify-center rounded-full font-bold text-[10px]">
+                            {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
                         </div>
-                        @endif
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 text-gray-700" fill="none"
-                            viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                        </svg>
+                        <span class="hidden sm:inline">{{ Auth::user()->name }}</span>
                     </button>
-
                     <div id="userDropdownMenu"
-                        class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-2xl border border-gray-200 z-50">
-                        <div class="p-3 border-b border-gray-200">
-                            <p class="text-sm font-semibold text-gray-700">
-                                {{ Auth::guard('clinic')->user()->username }}
-                            </p>
-                            <p class="text-xs text-gray-500">{{ Auth::guard('clinic')->user()->email }}</p>
-                        </div>
-
-                        <ul class="py-2">
-                            <li>
-                                <button id="openClinicSettingsBtn"
-                                    class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                    </svg>
-                                    Settings
-                                </button>
-                            </li>
-                            <li>
-                                <form method="POST" action="{{ route('logout') }}">
-                                    @csrf
-                                    <button type="submit"
-                                        class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2" fill="none"
-                                            viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                                        </svg>
-                                        Logout
-                                    </button>
-                                </form>
-                            </li>
-                        </ul>
+                        class="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-md border hidden z-50">
+                        <button id="openClinicSettingsBtn" type="button"
+                            class="w-full text-left flex items-center px-3 py-2 hover:bg-gray-100 text-[12px]">Settings</button>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit"
+                                class="w-full text-left flex items-center px-3 py-2 text-red-500 hover:bg-gray-100 text-[12px]">Sign
+                                out</button>
+                        </form>
                     </div>
                 </div>
             </div>
         </header>
-
 
         <main class="flex-grow overflow-y-auto">
             <div>
@@ -251,138 +229,128 @@
         </main>
     </div>
 
-
     <div id="clinicSettingsModal"
-        class="hidden fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50 p-4">
-        <div class="bg-white rounded-xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto">
-
-            <div class="px-6 py-5 border-b border-gray-200 bg-gradient-to-r from-blue-600 to-blue-700">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center space-x-4">
-                        <div class="relative">
-                            <img id="previewClinicPhoto"
-                                class="w-16 h-16 rounded-full object-cover border-4 border-white shadow-md"
-                                src="{{ Auth::guard('clinic')->user()->profile_photo ? asset('storage/' . Auth::guard('clinic')->user()->profile_photo) : 'https://via.placeholder.com/150' }}"
-                                alt="Clinic Profile">
-                            <label
-                                class="absolute bottom-0 right-0 bg-white rounded-full p-1 cursor-pointer hover:bg-gray-100">
-                                <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-                                </svg>
-                                <input type="file" form="clinicSettingsForm" name="profile_photo" accept="image/*"
-                                    class="hidden" onchange="previewClinicImage(event)">
-                            </label>
-                        </div>
-                        <div>
-                            <h2 class="text-xl font-bold text-white">Clinic Settings</h2>
-                            <p class="text-sm text-blue-100">Manage your profile and security</p>
-                        </div>
-                    </div>
-                    <button onclick="closeModal('clinicSettingsModal')" class="text-white hover:text-gray-200">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-                </div>
+        class="fixed inset-0 bg-gray-900 bg-opacity-60 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="sticky top-0 bg-gradient-to-r from-blue-600 to-blue-700 px-8 py-5 rounded-t-xl z-10">
+                <h2 class="text-2xl font-bold text-white">Clinic Settings</h2>
+                <p class="text-blue-100 text-sm mt-1">Update your clinic information and account preferences</p>
             </div>
 
             <form id="clinicSettingsForm" method="POST" action="{{ route('clinic.settings.update') }}"
-                enctype="multipart/form-data" class="p-8 space-y-6">
+                enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 
-                <div class="space-y-6">
-                    <div class="flex items-center gap-2 pb-2 border-b-2 border-blue-600">
-                        <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                        </svg>
-                        <h3 class="text-lg font-bold text-gray-800">Profile Information</h3>
+                <div class="px-8 py-6 space-y-6">
+                    <div class="bg-gray-50 rounded-lg p-6 border border-gray-200">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
+                                </path>
+                            </svg>
+                            Clinic Information
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Clinic Name</label>
+                                <input type="text" name="clinic_name" value="{{ Auth::user()->clinic_name ?? '' }}"
+                                    placeholder="Enter clinic name"
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                                @error('clinic_name')
+                                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Phone Number</label>
+                                <input type="text" name="phone" value="{{ Auth::user()->phone ?? '' }}"
+                                    placeholder="Enter phone number"
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                                @error('phone')
+                                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div class="md:col-span-2">
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Clinic Address</label>
+                                <textarea name="address" rows="3" placeholder="Enter clinic address"
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition resize-none">{{ Auth::user()->address ?? '' }}</textarea>
+                                @error('address')
+                                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Clinic Name <span
-                                    class="text-red-500">*</span></label>
-                            <input type="text" name="clinic_name"
-                                value="{{ old('clinic_name', Auth::guard('clinic')->user()->clinic_name) }}" required
-                                placeholder="Enter clinic name"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
-                            @error('clinic_name')
-                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                            @enderror
-                        </div>
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Email <span
-                                    class="text-red-500">*</span></label>
-                            <input type="email" name="email"
-                                value="{{ old('email', Auth::guard('clinic')->user()->email) }}" required
-                                placeholder="clinic@example.com"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
-                            @error('email')
-                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                            @enderror
+                    <div class="bg-gray-50 rounded-lg p-6 border border-gray-200">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z">
+                                </path>
+                            </svg>
+                            Profile Picture
+                        </h3>
+                        <div class="flex items-center gap-6">
+                            <div class="flex-shrink-0">
+                                @if(Auth::user()->photo)
+                                <img id="previewClinicPhoto" src="{{ asset('storage/' . Auth::user()->photo) }}"
+                                    alt="Profile" class="w-24 h-24 rounded-full object-cover border-4 border-blue-100">
+                                @else
+                                <img id="previewClinicPhoto" src="{{ asset('images/default-avatar.png') }}"
+                                    alt="Default Profile"
+                                    class="w-24 h-24 rounded-full object-cover border-4 border-blue-100">
+                                @endif
+                            </div>
+                            <div class="flex-1">
+                                <label
+                                    class="cursor-pointer inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition shadow-sm font-medium">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                        </path>
+                                    </svg>
+                                    Choose Photo
+                                    <input type="file" name="photo" accept="image/*" class="hidden"
+                                        onchange="previewClinicImage(event)">
+                                </label>
+                                <p class="text-xs text-gray-500 mt-2">JPG, PNG or GIF. Max size 2MB</p>
+                                @error('photo')
+                                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Contact Number</label>
-                            <input type="text" name="contact_number"
-                                value="{{ old('contact_number', Auth::guard('clinic')->user()->contact_number ?? '') }}"
-                                placeholder="09XX XXX XXXX"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
-                            @error('contact_number')
-                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                            @enderror
-                        </div>
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Address</label>
-                            <input type="text" name="address"
-                                value="{{ old('address', Auth::guard('clinic')->user()->address ?? '') }}"
-                                placeholder="Clinic address"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
-                            @error('address')
-                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                            @enderror
-                        </div>
-                    </div>
-                </div>
-                <div class="space-y-6 pt-6 border-t border-gray-200">
-                    <div class="flex items-center gap-2 pb-2 border-b-2 border-blue-600">
-                        <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                        </svg>
-                        <h3 class="text-lg font-bold text-gray-800">Change Password</h3>
-                        <span class="text-sm text-gray-500">(Optional)</span>
-                    </div>
-
-                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                        <p class="text-sm text-blue-800">
-                            <strong>Note:</strong> Leave password fields blank if you don't want to change your
-                            password.
+                    <div class="bg-gray-50 rounded-lg p-6 border border-gray-200">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2 flex items-center gap-2">
+                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
+                                </path>
+                            </svg>
+                            Change Password
+                        </h3>
+                        <p class="text-sm text-gray-600 mb-4">
+                            Leave password fields empty if you don't want to change your password.
                         </p>
-                    </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">New Password</label>
-                            <input type="password" name="password" placeholder="Enter new password (min. 8 characters)"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
-                            @error('password')
-                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                            @enderror
-                        </div>
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Confirm New Password</label>
-                            <input type="password" name="password_confirmation" placeholder="Confirm new password"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">New Password</label>
+                                <input type="password" name="password"
+                                    placeholder="Enter new password (min. 8 characters)"
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                                @error('password')
+                                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Confirm New
+                                    Password</label>
+                                <input type="password" name="password_confirmation" placeholder="Confirm new password"
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -402,125 +370,160 @@
     </div>
 
     <script>
+        // Mobile Sidebar Toggle
+        const hamburgerBtn = document.getElementById('hamburger-btn');
+        const closeSidebarBtn = document.getElementById('close-sidebar-btn');
+        const sidebar = document.getElementById('sidebar');
+        const mobileOverlay = document.getElementById('mobile-overlay');
+
+        function openSidebar() {
+            sidebar.classList.remove('-translate-x-full');
+            mobileOverlay.classList.remove('hidden');
+        }
+
+        function closeSidebar() {
+            sidebar.classList.add('-translate-x-full');
+            mobileOverlay.classList.add('hidden');
+        }
+
+        if (hamburgerBtn) {
+            hamburgerBtn.addEventListener('click', openSidebar);
+        }
+
+        if (closeSidebarBtn) {
+            closeSidebarBtn.addEventListener('click', closeSidebar);
+        }
+
+        if (mobileOverlay) {
+            mobileOverlay.addEventListener('click', closeSidebar);
+        }
+
+        // Modal functions
         function openModal(id) { 
-    document.getElementById(id).classList.remove('hidden'); 
-    document.getElementById(id).classList.add('flex'); 
-}
-
-function closeModal(id) { 
-    document.getElementById(id).classList.remove('flex'); 
-    document.getElementById(id).classList.add('hidden'); 
-}
-
-function previewClinicImage(event) {
-    const file = event.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            document.getElementById('previewClinicPhoto').src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-    }
-}
-
-function markAsRead(event, notificationId) {
-    fetch(`/clinic/notifications/${notificationId}/mark-read`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            document.getElementById(id).classList.remove('hidden'); 
+            document.getElementById(id).classList.add('flex'); 
         }
-    }).then(response => {
-        if (response.ok) {
-            const countElement = document.querySelector('#notification-bell-btn span');
-            if (countElement) {
-                let count = parseInt(countElement.textContent);
-                count = Math.max(0, count - 1);
-                if (count === 0) {
-                    countElement.remove();
-                } else {
-                    countElement.textContent = count;
+
+        function closeModal(id) { 
+            document.getElementById(id).classList.remove('flex'); 
+            document.getElementById(id).classList.add('hidden'); 
+        }
+
+        function previewClinicImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('previewClinicPhoto').src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function markAsRead(event, notificationId) {
+            fetch(`/clinic/notifications/${notificationId}/mark-read`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 }
-            }
-        }
-    });
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-   
-    const bellButton = document.getElementById('notification-bell-btn');
-    const popup = document.getElementById('notification-popup');
-    const container = document.getElementById('notification-container');
-
-    if (bellButton && popup) {
-        function closePopup() {
-            popup.classList.add('hidden', 'scale-95', 'opacity-0');
-            popup.classList.remove('scale-100', 'opacity-100');
-        }
-
-        function openPopup() {
-            popup.classList.remove('hidden');
-       
-            void popup.offsetWidth;
-            popup.classList.add('scale-100', 'opacity-100');
-            popup.classList.remove('scale-95', 'opacity-0');
+            }).then(response => {
+                if (response.ok) {
+                    const countElement = document.querySelector('#notification-bell-btn span');
+                    if (countElement) {
+                        let count = parseInt(countElement.textContent);
+                        count = Math.max(0, count - 1);
+                        if (count === 0) {
+                            countElement.remove();
+                        } else {
+                            countElement.textContent = count;
+                        }
+                    }
+                }
+            });
         }
 
-        bellButton.addEventListener('click', function(e) {
-            e.stopPropagation();
-            if (popup.classList.contains('hidden')) {
-                openPopup();
-            } else {
-                closePopup();
+        document.addEventListener('DOMContentLoaded', function() {
+            // Notification popup
+            const bellButton = document.getElementById('notification-bell-btn');
+            const popup = document.getElementById('notification-popup');
+            const container = document.getElementById('notification-container');
+
+            if (bellButton && popup) {
+                function closePopup() {
+                    popup.classList.add('hidden', 'scale-95', 'opacity-0');
+                    popup.classList.remove('scale-100', 'opacity-100');
+                }
+
+                function openPopup() {
+                    popup.classList.remove('hidden');
+                    void popup.offsetWidth;
+                    popup.classList.add('scale-100', 'opacity-100');
+                    popup.classList.remove('scale-95', 'opacity-0');
+                }
+
+                bellButton.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    if (popup.classList.contains('hidden')) {
+                        openPopup();
+                    } else {
+                        closePopup();
+                    }
+                });
+
+                document.addEventListener('click', function(e) {
+                    if (!popup.classList.contains('hidden') && !container.contains(e.target)) {
+                        closePopup();
+                    }
+                });
+
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape' && !popup.classList.contains('hidden')) {
+                        closePopup();
+                    }
+                });
             }
-        });
 
-        document.addEventListener('click', function(e) {
-            if (!popup.classList.contains('hidden') && !container.contains(e.target)) {
-                closePopup();
+            // User dropdown menu
+            const userBtn = document.getElementById('userDropdownBtn');
+            const userMenu = document.getElementById('userDropdownMenu');
+            const openSettingsBtn = document.getElementById('openClinicSettingsBtn');
+            const modal = document.getElementById('clinicSettingsModal');
+
+            if (userBtn && userMenu) {
+                userBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    userMenu.classList.toggle('hidden');
+                });
+
+                document.addEventListener('click', function(e) {
+                    if (!userMenu.contains(e.target) && !userBtn.contains(e.target)) {
+                        userMenu.classList.add('hidden');
+                    }
+                });
             }
-        });
 
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && !popup.classList.contains('hidden')) {
-                closePopup();
+            if (openSettingsBtn && modal) {
+                openSettingsBtn.addEventListener('click', function() {
+                    userMenu.classList.add('hidden');
+                    modal.classList.remove('hidden');
+                    modal.classList.add('flex');
+                });
             }
+
+            // Close modal and sidebar with Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    if (modal && !modal.classList.contains('hidden')) {
+                        modal.classList.remove('flex');
+                        modal.classList.add('hidden');
+                    }
+                    if (sidebar && !sidebar.classList.contains('-translate-x-full')) {
+                        closeSidebar();
+                    }
+                }
+            });
         });
-    }
-
-    const userBtn = document.getElementById('userDropdownBtn');
-    const userMenu = document.getElementById('userDropdownMenu');
-    const openSettingsBtn = document.getElementById('openClinicSettingsBtn');
-    const modal = document.getElementById('clinicSettingsModal');
-
-    if (userBtn && userMenu) {
-        userBtn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            userMenu.classList.toggle('hidden');
-        });
-
-        document.addEventListener('click', function(e) {
-            if (!userMenu.contains(e.target) && !userBtn.contains(e.target)) {
-                userMenu.classList.add('hidden');
-            }
-        });
-    }
-
-    if (openSettingsBtn && modal) {
-        openSettingsBtn.addEventListener('click', function() {
-            userMenu.classList.add('hidden');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-        });
-    }
-
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
-            modal.classList.remove('flex');
-            modal.classList.add('hidden');
-        }
-    });
-});
     </script>
 </body>
 
