@@ -24,13 +24,68 @@ class CaseOrdersController extends Controller
         $this->smsNotifier = $smsNotifier;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $caseOrders = CaseOrder::with(['clinic', 'patient', 'dentist'])
-            ->latest()
-            ->paginate(15);
+        $query = CaseOrder::with(['clinic', 'patient', 'dentist']);
 
-        return view('admin.case-orders.index', compact('caseOrders'));
+        // Search functionality
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('co_id', 'like', '%' . $search . '%')
+                    ->orWhere('case_type', 'like', '%' . $search . '%')
+                    ->orWhereHas('clinic', function ($q) use ($search) {
+                        $q->where('clinic_name', 'like', '%' . $search . '%');
+                    })
+                    ->orWhereHas('patient', function ($q) use ($search) {
+                        $q->where('name', 'like', '%' . $search . '%');
+                    })
+                    ->orWhereHas('dentist', function ($q) use ($search) {
+                        $q->where('name', 'like', '%' . $search . '%');
+                    });
+            });
+        }
+
+        // Filter by status
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        // Filter by clinic
+        if ($request->filled('clinic_id')) {
+            $query->where('clinic_id', $request->clinic_id);
+        }
+
+        // Filter by case type
+        if ($request->filled('case_type')) {
+            $query->where('case_type', $request->case_type);
+        }
+
+        // Filter by date range
+        if ($request->filled('date_from')) {
+            $query->whereDate('created_at', '>=', $request->date_from);
+        }
+        if ($request->filled('date_to')) {
+            $query->whereDate('created_at', '<=', $request->date_to);
+        }
+
+        $caseOrders = $query->latest()->paginate(10)->withQueryString();
+
+        // Get filter options
+        $clinics = \App\Models\Clinic::orderBy('clinic_name')->get();
+        $caseTypes = CaseOrder::distinct()->pluck('case_type')->sort();
+
+        $statuses = [
+            'pending' => 'Pending',
+            'for appointment' => 'For Appointment',
+            'in progress' => 'In Progress',
+            'under review' => 'Under Review',
+            'adjustment requested' => 'Adjustment Requested',
+            'revision in progress' => 'Revision In Progress',
+            'completed' => 'Completed',
+        ];
+
+        return view('admin.case-orders.index', compact('caseOrders', 'clinics', 'caseTypes', 'statuses'));
     }
 
     public function show($id)
@@ -81,7 +136,7 @@ class CaseOrdersController extends Controller
             'pickup_date' => $validated['pickup_date'],
             'pickup_address' => $caseOrder->clinic->address,
             'status' => 'pending',
-           
+
         ]);
 
         $caseOrder->update([
@@ -221,7 +276,7 @@ class CaseOrdersController extends Controller
         $validated = $request->validate([
             'rider_id' => 'required|exists:users,id',
             'delivery_date' => 'required|date|after_or_equal:today',
-           
+
         ]);
 
         $delivery = Delivery::create([
@@ -229,7 +284,7 @@ class CaseOrdersController extends Controller
             'rider_id' => $validated['rider_id'],
             'delivery_status' => 'ready to deliver',
             'delivery_date' => $validated['delivery_date'],
-          
+
         ]);
 
         NotificationHelper::notifyUser(
