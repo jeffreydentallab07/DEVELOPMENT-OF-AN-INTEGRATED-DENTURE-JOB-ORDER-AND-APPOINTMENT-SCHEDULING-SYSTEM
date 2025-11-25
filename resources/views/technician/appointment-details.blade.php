@@ -289,7 +289,7 @@
                             <span class="text-sm text-gray-600">Days Until Completion</span>
                             <span class="font-semibold text-gray-800">
                                 @if($appointment->estimated_date->isFuture())
-                                {{ (int) $appointment->estimated_date->diffInDays(now()) }} days
+                                {{ (int) now()->diffInDays($appointment->estimated_date, false) }} days
                                 @elseif($appointment->estimated_date->isToday())
                                 <span class="text-blue-600">Today</span>
                                 @else

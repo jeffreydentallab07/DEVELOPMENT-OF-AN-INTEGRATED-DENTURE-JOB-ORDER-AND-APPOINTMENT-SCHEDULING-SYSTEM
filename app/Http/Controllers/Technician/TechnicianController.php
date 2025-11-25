@@ -219,7 +219,6 @@ class TechnicianController extends Controller
         $validated = $request->validate([
             'material_id' => 'required|exists:materials,material_id',
             'quantity_used' => 'required|integer|min:1',
-            'notes' => 'nullable|string',
         ]);
 
         // Check if material has enough quantity
@@ -233,7 +232,6 @@ class TechnicianController extends Controller
             'appointment_id' => $appointment->appointment_id,
             'material_id' => $validated['material_id'],
             'quantity_used' => $validated['quantity_used'],
-            'notes' => $validated['notes'],
         ]);
 
         // Deduct from material inventory
