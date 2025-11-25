@@ -144,7 +144,7 @@
                                         Price</th>
                                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Total
                                     </th>
-                                   
+
                                     @if($appointment->work_status !== 'completed' && $appointment->work_status !==
                                     'cancelled')
                                     <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Action
@@ -211,7 +211,7 @@
                         <div class="space-y-3">
                             <select name="work_status" required
                                 class="w-full border-2 border-gray-300 rounded-lg p-3 focus:border-blue-500 focus:outline-none">
-                                
+
                                 <option value="in-progress" {{ $appointment->work_status === 'in-progress' ? 'selected'
                                     : '' }}>In Progress</option>
                                 <option value="completed" {{ $appointment->work_status === 'completed' ? 'selected' : ''
@@ -221,7 +221,7 @@
                                 class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition font-semibold">
                                 Update Status
                             </button>
-                            
+
                         </div>
                     </form>
 
@@ -289,7 +289,7 @@
                             <span class="text-sm text-gray-600">Days Until Completion</span>
                             <span class="font-semibold text-gray-800">
                                 @if($appointment->estimated_date->isFuture())
-                                {{ $appointment->estimated_date->diffInDays(now()) }} days
+                                {{ (int) $appointment->estimated_date->diffInDays(now()) }} days
                                 @elseif($appointment->estimated_date->isToday())
                                 <span class="text-blue-600">Today</span>
                                 @else
@@ -339,7 +339,7 @@
                 <p id="totalCost" class="text-lg font-bold text-green-600"></p>
             </div>
 
-          
+
 
             <div class="flex justify-end gap-3">
                 <button type="button" onclick="closeAddMaterialModal()"
