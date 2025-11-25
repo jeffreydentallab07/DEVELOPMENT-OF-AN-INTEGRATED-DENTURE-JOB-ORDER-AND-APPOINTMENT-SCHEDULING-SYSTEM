@@ -272,7 +272,7 @@ class ReportsController extends Controller
                 $query->whereBetween('created_at', [$dateFrom, $dateTo]);
             }])
             ->withCount(['pickups as completed_pickups' => function ($query) use ($dateFrom, $dateTo) {
-                $query->where('pickup_status', 'completed')
+                $query->where('status', 'picked-up')
                     ->whereBetween('created_at', [$dateFrom, $dateTo]);
             }])
             ->having('total_deliveries', '>', 0)

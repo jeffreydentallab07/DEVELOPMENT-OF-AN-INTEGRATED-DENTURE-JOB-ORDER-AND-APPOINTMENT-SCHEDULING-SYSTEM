@@ -49,8 +49,31 @@ class ClinicsController extends Controller
      */
     public function show($id)
     {
-        $clinic = Clinic::with('approvedBy')->findOrFail($id);
-        return view('admin.clinics.show', compact('clinic'));
+        $clinic = Clinic::with(['approvedBy', 'dentists', 'patients'])
+            ->withCount(['caseOrders', 'dentists', 'patients'])
+            ->findOrFail($id);
+
+        // Get recent case orders (last 10)
+        $recentCaseOrders = $clinic->caseOrders()
+            ->with(['patient', 'dentist'])
+            ->orderBy('created_at', 'desc')
+            ->limit(10)
+            ->get();
+
+        // Get statistics
+        $totalCaseOrders = $clinic->caseOrders()->count();
+        $completedCaseOrders = $clinic->caseOrders()->where('status', 'completed')->count();
+        $pendingCaseOrders = $clinic->caseOrders()
+            ->whereIn('status', ['initial', 'for pickup', 'for appointment', 'in-progress'])
+            ->count();
+
+        return view('admin.clinics.show', compact(
+            'clinic',
+            'recentCaseOrders',
+            'totalCaseOrders',
+            'completedCaseOrders',
+            'pendingCaseOrders'
+        ));
     }
 
     /**

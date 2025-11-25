@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Invoice - BILL-{{ str_pad($billing->id, 5, '0', STR_PAD_LEFT) }}</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         @media print {
             .no-print {
@@ -17,12 +18,52 @@
                 -webkit-print-color-adjust: exact;
             }
         }
+
+        #pdf-loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        #pdf-loading .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
     </style>
 </head>
 
 <body class="bg-gray-300 p-8">
 
     <div class="no-print max-w-4xl mx-auto mb-4 flex justify-end gap-3">
+        <button onclick="downloadPDF()"
+            class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition flex items-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            Download PDF
+        </button>
         <button onclick="window.print()"
             class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition flex items-center gap-2">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -31,13 +72,13 @@
             </svg>
             Print Invoice
         </button>
-        <button onclick="window.close()"
+        <button onclick="window.history.back()"
             class="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600 transition">
             Close
         </button>
     </div>
 
-    <div class="max-w-4xl mx-auto bg-white shadow-lg">
+    <div id="invoice-content" class="max-w-4xl mx-auto bg-white shadow-lg">
 
         <div class="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-8">
             <div class="flex justify-between items-start">
@@ -46,8 +87,9 @@
                     <h1 class="text-3xl font-bold">Jeffrey Dental Laboratory</h1>
                     <p class="text-blue-100 text-sm mt-2">Cagayan de Oro City, Philippines</p>
                     <p class="text-blue-100 text-sm">Contact: 09067732353</p>
-                    <p class="text-blue-100 text-sm">Email: jeffreydentallab07@gmail.com
-.com</p>
+                    <p class="text-blue-100 text-sm">Email: <a href="/cdn-cgi/l/email-protection" class="__cf_email__"
+                            data-cfemail="731916151501160a17161d07121f1f1211434433141e121a1f5d101c1e">[email&#160;protected]</a>
+                        .com</p>
                 </div>
                 <div class="text-right">
                     <h2 class="text-2xl font-bold">INVOICE</h2>
@@ -214,5 +256,55 @@
     </div>
 
 </body>
+<script>
+    function downloadPDF() {
+        const element = document.getElementById('invoice-content');
+        const billingId = '{{ str_pad($billing->id, 5, "0", STR_PAD_LEFT) }}';
+
+        // Show loading
+        const loading = document.createElement('div');
+        loading.id = 'pdf-loading';
+        loading.innerHTML = `
+            <div style="background: white; padding: 30px; border-radius: 10px; text-align: center;">
+                <div class="spinner" style="margin: 0 auto 15px;"></div>
+                <p style="margin: 0; font-size: 16px; color: #333;">Generating PDF...</p>
+            </div>
+        `;
+        document.body.appendChild(loading);
+
+        const filename = `invoice-BILL-${billingId}.pdf`;
+
+        const opt = {
+            margin: [0, 1, 2, 3],
+            filename: filename,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: {
+                scale: 2,
+                useCORS: true,
+                letterRendering: true,
+                logging: false
+            },
+            jsPDF: {
+                unit: 'mm',
+                format: 'legal',
+                orientation: 'portrait'
+            },
+            pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+        };
+
+        html2pdf()
+            .set(opt)
+            .from(element)
+            .save()
+            .then(() => {
+                document.getElementById('pdf-loading')?.remove();
+            })
+            .catch((err) => {
+                console.error('PDF Error:', err);
+                document.getElementById('pdf-loading')?.remove();
+                alert('Failed to generate PDF. Please try again.');
+            });
+    }
+</script>
 
 </html>
