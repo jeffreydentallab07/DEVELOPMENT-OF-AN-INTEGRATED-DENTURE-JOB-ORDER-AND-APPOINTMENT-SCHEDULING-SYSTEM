@@ -13,8 +13,6 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
-use Spatie\Browsershot\Browsershot;
-use Illuminate\Support\Facades\View;
 
 class ReportsController extends Controller
 {
@@ -295,7 +293,8 @@ class ReportsController extends Controller
     }
 
     /**
-     * Export report as PDF using Browsershot (renders exactly like the print page)
+     * Export report as PDF - renders print view with auto-download flag
+     * PDF generation now happens client-side using html2pdf.js
      */
     public function exportPdf(Request $request)
     {
@@ -329,36 +328,13 @@ class ReportsController extends Controller
                 break;
         }
 
-        // Render the print view with all Tailwind CSS
-        $html = View::make('admin.reports.print-pdf', [
+        return view('admin.reports.print', [
             'reportType' => $reportType,
             'dateFrom' => $dateFrom,
             'dateTo' => $dateTo,
-            'data' => $data
-        ])->render();
-
-        // Create temp directory if it doesn't exist
-        $tempDir = storage_path('app/temp');
-        if (!file_exists($tempDir)) {
-            mkdir($tempDir, 0755, true);
-        }
-
-        // Generate PDF using Browsershot (renders like Chrome browser)
-        $pdfPath = $tempDir . DIRECTORY_SEPARATOR . 'report-' . $reportType . '-' . time() . '.pdf';
-
-        // Determine orientation and paper size based on report type
-        $landscape = in_array($reportType, ['clinic-performance', 'technician-performance', 'delivery-performance', 'case-orders']);
-        $paperWidth = $landscape ? 420 : 297;  // A3 landscape or A4 portrait
-        $paperHeight = $landscape ? 297 : 210;
-
-        Browsershot::html($html)
-            ->setOption('landscape', $landscape)
-            ->paperSize($paperWidth, $paperHeight)
-            ->margins(10, 10, 10, 10)
-            ->waitUntilNetworkIdle()
-            ->save($pdfPath);
-
-        return response()->download($pdfPath)->deleteFileAfterSend(true);
+            'data' => $data,
+            'autoDownload' => true
+        ]);
     }
 
     /**
@@ -400,7 +376,8 @@ class ReportsController extends Controller
             'reportType' => $reportType,
             'dateFrom' => $dateFrom,
             'dateTo' => $dateTo,
-            'data' => $data
+            'data' => $data,
+            'autoDownload' => false
         ]);
     }
 
@@ -412,44 +389,7 @@ class ReportsController extends Controller
 
         $data = $this->getCaseOrdersReport($dateFrom, $dateTo);
 
-        return view('admin.reports.details.case-orders', compact('dateFrom', 'dateTo', 'data'));
-    }
-
-    public function printCaseOrdersDetail(Request $request)
-    {
-        $dateFrom = $request->get('date_from', now()->startOfMonth()->format('Y-m-d'));
-        $dateTo = $request->get('date_to', now()->format('Y-m-d'));
-
-        $data = $this->getCaseOrdersReport($dateFrom, $dateTo);
-
         return view('admin.reports.details.print-case-orders', compact('dateFrom', 'dateTo', 'data'));
-    }
-
-    public function caseOrdersDetailPdf(Request $request)
-    {
-        $dateFrom = $request->get('date_from', now()->startOfMonth()->format('Y-m-d'));
-        $dateTo = $request->get('date_to', now()->format('Y-m-d'));
-
-        $data = $this->getCaseOrdersReport($dateFrom, $dateTo);
-
-        $html = View::make('admin.reports.details.print-case-orders', compact('dateFrom', 'dateTo', 'data'))->render();
-
-        // Create temp directory if it doesn't exist
-        $tempDir = storage_path('app/temp');
-        if (!file_exists($tempDir)) {
-            mkdir($tempDir, 0755, true);
-        }
-
-        $pdfPath = $tempDir . DIRECTORY_SEPARATOR . 'case-orders-report-' . time() . '.pdf';
-
-        Browsershot::html($html)
-            ->setOption('landscape', true)
-            ->paperSize(420, 297) // A3 landscape
-            ->margins(10, 10, 10, 10)
-            ->waitUntilNetworkIdle()
-            ->save($pdfPath);
-
-        return response()->download($pdfPath)->deleteFileAfterSend(true);
     }
 
     // Revenue Detail
@@ -460,44 +400,7 @@ class ReportsController extends Controller
 
         $data = $this->getRevenueReport($dateFrom, $dateTo);
 
-        return view('admin.reports.details.revenue', compact('dateFrom', 'dateTo', 'data'));
-    }
-
-    public function printRevenueDetail(Request $request)
-    {
-        $dateFrom = $request->get('date_from', now()->startOfMonth()->format('Y-m-d'));
-        $dateTo = $request->get('date_to', now()->format('Y-m-d'));
-
-        $data = $this->getRevenueReport($dateFrom, $dateTo);
-
         return view('admin.reports.details.print-revenue', compact('dateFrom', 'dateTo', 'data'));
-    }
-
-    public function revenueDetailPdf(Request $request)
-    {
-        $dateFrom = $request->get('date_from', now()->startOfMonth()->format('Y-m-d'));
-        $dateTo = $request->get('date_to', now()->format('Y-m-d'));
-
-        $data = $this->getRevenueReport($dateFrom, $dateTo);
-
-        $html = View::make('admin.reports.details.print-revenue', compact('dateFrom', 'dateTo', 'data'))->render();
-
-        // Create temp directory if it doesn't exist
-        $tempDir = storage_path('app/temp');
-        if (!file_exists($tempDir)) {
-            mkdir($tempDir, 0755, true);
-        }
-
-        $pdfPath = $tempDir . DIRECTORY_SEPARATOR . 'revenue-report-' . time() . '.pdf';
-
-        Browsershot::html($html)
-            ->setOption('landscape', true)
-            ->paperSize(420, 297) // A3 landscape
-            ->margins(10, 10, 10, 10)
-            ->waitUntilNetworkIdle()
-            ->save($pdfPath);
-
-        return response()->download($pdfPath)->deleteFileAfterSend(true);
     }
 
     // Materials Detail
@@ -508,43 +411,6 @@ class ReportsController extends Controller
 
         $data = $this->getMaterialsReport($dateFrom, $dateTo);
 
-        return view('admin.reports.details.materials', compact('dateFrom', 'dateTo', 'data'));
-    }
-
-    public function printMaterialsDetail(Request $request)
-    {
-        $dateFrom = $request->get('date_from', now()->startOfMonth()->format('Y-m-d'));
-        $dateTo = $request->get('date_to', now()->format('Y-m-d'));
-
-        $data = $this->getMaterialsReport($dateFrom, $dateTo);
-
         return view('admin.reports.details.print-materials', compact('dateFrom', 'dateTo', 'data'));
-    }
-
-    public function materialsDetailPdf(Request $request)
-    {
-        $dateFrom = $request->get('date_from', now()->startOfMonth()->format('Y-m-d'));
-        $dateTo = $request->get('date_to', now()->format('Y-m-d'));
-
-        $data = $this->getMaterialsReport($dateFrom, $dateTo);
-
-        $html = View::make('admin.reports.details.print-materials', compact('dateFrom', 'dateTo', 'data'))->render();
-
-        // Create temp directory if it doesn't exist
-        $tempDir = storage_path('app/temp');
-        if (!file_exists($tempDir)) {
-            mkdir($tempDir, 0755, true);
-        }
-
-        $pdfPath = $tempDir . DIRECTORY_SEPARATOR . 'materials-report-' . time() . '.pdf';
-
-        Browsershot::html($html)
-            ->setOption('landscape', false)
-            ->paperSize(297, 210) // A4 portrait
-            ->margins(10, 10, 10, 10)
-            ->waitUntilNetworkIdle()
-            ->save($pdfPath);
-
-        return response()->download($pdfPath)->deleteFileAfterSend(true);
     }
 }

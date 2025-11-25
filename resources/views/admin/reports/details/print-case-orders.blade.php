@@ -7,6 +7,7 @@
     <title>Case Orders Detail Report</title>
     <link rel="icon" href="{{ asset('images/logo3.ico') }}" type="image/x-icon">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         @media print {
             .no-print {
@@ -16,6 +17,42 @@
             body {
                 print-color-adjust: exact;
                 -webkit-print-color-adjust: exact;
+            }
+
+            .page-break {
+                page-break-after: always;
+            }
+        }
+
+        #pdf-loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        #pdf-loading .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
             }
         }
     </style>
@@ -32,6 +69,17 @@
                     \Carbon\Carbon::parse($dateTo)->format('M d, Y') }}</p>
             </div>
             <div class="flex gap-3">
+                <!-- Download PDF Button -->
+                <button onclick="downloadPDF()"
+                    class="bg-green-600 hover:bg-green-700 px-6 py-2 rounded-lg font-semibold transition flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                        </path>
+                    </svg>
+                    Download PDF
+                </button>
+
                 <!-- Print Button -->
                 <button onclick="window.print()"
                     class="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-lg font-semibold transition flex items-center gap-2">
@@ -43,19 +91,8 @@
                     Print
                 </button>
 
-                <!-- Download PDF Button -->
-                <button onclick="downloadPDF()"
-                    class="bg-red-600 hover:bg-red-700 px-6 py-2 rounded-lg font-semibold transition flex items-center gap-2">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
-                        </path>
-                    </svg>
-                    Download PDF
-                </button>
-
                 <!-- Close Button -->
-                <button onclick="window.close()"
+                <button onclick="window.history.back()"
                     class="bg-gray-600 hover:bg-gray-700 px-6 py-2 rounded-lg font-semibold transition">
                     Close
                 </button>
@@ -64,7 +101,7 @@
     </div>
 
     <!-- Report Content -->
-    <div class="max-w-7xl mx-auto p-8" style="margin-top: 80px;">
+    <div id="report-content" class="max-w-7xl mx-auto p-8" style="margin-top: 80px;">
 
         <!-- Report Header -->
         <div class="text-center mb-8 pb-6 border-b-2 border-gray-300">
@@ -215,17 +252,71 @@
             <p class="mt-1">For inquiries, please contact the administration office.</p>
         </div>
     </div>
-</body>
-<script>
-    function downloadPDF() {
-        const params = new URLSearchParams({
-            date_from: '{{ $dateFrom }}',
-            date_to: '{{ $dateTo }}'
+
+    <script>
+        function downloadPDF() {
+            const element = document.getElementById('report-content');
+            const dateFrom = '{{ $dateFrom }}';
+            const dateTo = '{{ $dateTo }}';
+
+            // Show loading
+            const loading = document.createElement('div');
+            loading.id = 'pdf-loading';
+            loading.innerHTML = `
+                <div style="background: white; padding: 30px; border-radius: 10px; text-align: center;">
+                    <div class="spinner" style="margin: 0 auto 15px;"></div>
+                    <p style="margin: 0; font-size: 16px; color: #333;">Generating PDF...</p>
+                </div>
+            `;
+            document.body.appendChild(loading);
+
+            const filename = `case-orders-detail-report-${dateFrom}-to-${dateTo}.pdf`;
+
+            const opt = {
+                margin: [5, 5, 5, 5],
+                filename: filename,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: {
+                    scale: 2,
+                    useCORS: true,
+                    letterRendering: true,
+                    logging: false
+                },
+                jsPDF: {
+                    unit: 'mm',
+                    format: 'a4',
+                    orientation: 'portrait'
+                },
+                pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+            };
+
+            // Temporarily remove top margin for PDF
+            element.style.marginTop = '0';
+
+            html2pdf()
+                .set(opt)
+                .from(element)
+                .save()
+                .then(() => {
+                    element.style.marginTop = '5px';
+                    document.getElementById('pdf-loading')?.remove();
+                })
+                .catch((err) => {
+                    console.error('PDF Error:', err);
+                    element.style.marginTop = '5px';
+                    document.getElementById('pdf-loading')?.remove();
+                    alert('Failed to generate PDF. Please try again.');
+                });
+        }
+
+        // Auto-download if flag is set
+        @if(isset($autoDownload) && $autoDownload)
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(downloadPDF, 500);
         });
-        
-        const pdfUrl = '{{ route("admin.reports.caseOrdersDetailPdf") }}?' + params.toString();
-        window.location.href = pdfUrl;
-    }
-</script>
+        @endif
+    </script>
+
+</body>
 
 </html>
