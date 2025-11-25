@@ -12,17 +12,32 @@
         .notification-popup-transition {
             transition: transform 0.2s ease-out, opacity 0.2s ease-out;
         }
+
+        .sidebar-transition {
+            transition: transform 0.3s ease-in-out;
+        }
     </style>
 </head>
 
 <body class="h-screen flex bg-white text-[12px]">
 
-    <aside class="w-48 bg-blue-900 text-white flex flex-col fixed top-0 left-0 h-full">
-        <div class="h-20 px-3 border-b border-blue-700 flex items-center justify-center">
-            <img src="{{ asset('images/logo2.png') }}" alt="Logo" class="h-12 object-contain">
+    <!-- Mobile Overlay -->
+    <div id="mobile-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-30 hidden md:hidden"></div>
+
+    <!-- Sidebar -->
+    <aside id="sidebar"
+        class="w-48 sm:w-52 md:w-48 bg-blue-900 text-white flex flex-col fixed top-0 left-0 h-full z-40 transform -translate-x-full md:translate-x-0 sidebar-transition">
+        <div class="h-16 sm:h-20 px-3 border-b border-blue-700 flex items-center justify-between">
+            <img src="{{ asset('images/logo2.png') }}" alt="Logo" class="h-10 sm:h-12 object-contain">
+            <!-- Close button (mobile only) -->
+            <button id="close-sidebar-btn" class="md:hidden text-white p-2 hover:bg-blue-800 rounded">
+                <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
         </div>
 
-        <nav class="mt-4 flex-grow space-y-1">
+        <nav class="mt-3 sm:mt-4 flex-grow space-y-1 overflow-y-auto">
             @php
             $links = [
             ['url' => route('admin.case-orders.index'), 'label' => 'Case Orders', 'icon' => '
@@ -71,11 +86,11 @@
 
             @foreach($links as $link)
             <a href="{{ $link['url'] }}"
-                class="flex items-center space-x-2 p-2 rounded-l-lg transition duration-150 
-                          hover:bg-gray-300 hover:text-blue-900 
+                class="flex items-center space-x-2 p-2 sm:p-2.5 rounded-l-lg transition duration-150 
+                          hover:bg-gray-300 hover:text-blue-900 text-xs sm:text-[12px]
                           {{ request()->url() == $link['url'] ? 'bg-gray-300 text-blue-900 font-semibold' : 'text-indigo-300' }}">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor" stroke-width="2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     {!! $link['icon'] !!}
                 </svg>
                 <span>{{ $link['label'] }}</span>
@@ -85,10 +100,17 @@
     </aside>
 
     <!-- Main Content -->
-    <div class="flex-grow flex flex-col h-full ml-48">
+    <div class="flex-grow flex flex-col h-full md:ml-48">
 
         <!-- Header -->
-        <header class="bg-white p-3 flex items-center justify-end shadow-md z-10">
+        <header class="bg-white px-3 py-2 sm:p-3 flex items-center justify-between md:justify-end shadow-md z-10">
+
+            <!-- Hamburger Menu (Mobile Only) -->
+            <button id="hamburger-btn" class="md:hidden text-gray-700 p-1.5 sm:p-2 hover:bg-gray-100 rounded">
+                <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
 
             <!-- Search -->
             {{-- <div class="flex items-center gap-2 border border-gray-300 rounded-lg w-96 p-2 bg-white">
@@ -100,11 +122,11 @@
             </div> --}}
 
             <!-- Header Actions -->
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-1.5 sm:gap-2">
 
                 <!-- Dashboard Icon -->
                 <a href="{{ url('dashboard') }}"
-                    class="flex items-center justify-center w-8 h-8 rounded-lg hover:bg-gray-100 transition">
+                    class="flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-lg hover:bg-gray-100 transition">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-700" fill="none"
                         viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path d="M3 9.5L12 3l9 6.5V21a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V9.5z" />
@@ -113,7 +135,7 @@
                 <!-- Notifications -->
                 <div id="notification-container" class="relative">
                     <button id="notification-bell-btn"
-                        class="flex items-center justify-center w-8 h-8 rounded-lg hover:bg-gray-300 transition relative z-30">
+                        class="flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-lg hover:bg-gray-300 transition relative z-30">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-700" fill="none"
                             viewBox="0 0 24 24" stroke="currentColor">
                             <path
@@ -122,7 +144,7 @@
 
                         @if($notificationCount > 0)
                         <span id="notification-count"
-                            class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center">
+                            class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
                             {{ $notificationCount }}
                         </span>
                         @endif
@@ -130,49 +152,52 @@
 
                     <!-- Notification Popup -->
                     <div id="notification-popup"
-                        class="absolute right-0 mt-3 w-80 bg-white rounded-xl shadow-2xl border border-gray-300 hidden z-40 origin-top-right scale-95 opacity-0 transition-all duration-200">
+                        class="absolute right-0 sm:right-auto sm:left-auto mt-3 w-[calc(100vw-2rem)] sm:w-80 md:w-96 max-w-md bg-white rounded-xl shadow-2xl border border-gray-300 hidden z-40 origin-top-right scale-95 opacity-0 transition-all duration-200">
                         <div
-                            class="p-4 border-b border-gray-300 flex justify-between items-center bg-gray-50 rounded-t-xl">
-                            <h5 class="text-base font-semibold text-gray-700">Notifications</h5>
+                            class="p-3 sm:p-4 border-b border-gray-300 flex justify-between items-center bg-gray-50 rounded-t-xl">
+                            <h5 class="text-sm sm:text-base font-semibold text-gray-700">Notifications</h5>
                             @if($notificationCount > 0)
                             <form action="{{ route('notifications.markAllRead') }}" method="POST" class="inline">
                                 @csrf
-                                <button type="submit" class="text-xs text-blue-600 hover:underline">Mark all as
+                                <button type="submit" class="text-[11px] sm:text-xs text-blue-600 hover:underline">Mark
+                                    all as
                                     read</button>
                             </form>
                             @endif
                         </div>
 
-                        <div class="max-h-96 overflow-y-auto">
+                        <div class="max-h-64 sm:max-h-96 overflow-y-auto">
                             @forelse($notifications as $notification)
                             <a href="{{ $notification->link }}" onclick="markAsRead(event, {{ $notification->id }})"
-                                class="block p-3 hover:bg-gray-50 border-b border-gray-100 transition">
+                                class="block p-2.5 sm:p-3 hover:bg-gray-50 border-b border-gray-100 transition">
                                 <div class="flex items-start gap-2">
                                     <div class="w-2 h-2 bg-red-500 rounded-full mt-1.5 flex-shrink-0"></div>
-                                    <div class="flex-1">
-                                        <p class="text-sm font-medium text-gray-800">{{ $notification->title }}</p>
-                                        <p class="text-xs text-gray-600 mt-1">{{ $notification->message }}</p>
-                                        <p class="text-xs text-gray-400 mt-1">{{
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-xs sm:text-sm font-medium text-gray-800 truncate">{{
+                                            $notification->title }}</p>
+                                        <p class="text-[11px] sm:text-xs text-gray-600 mt-1 line-clamp-2">{{
+                                            $notification->message }}</p>
+                                        <p class="text-[10px] sm:text-xs text-gray-400 mt-1">{{
                                             $notification->created_at->diffForHumans() }}</p>
                                     </div>
                                 </div>
                             </a>
                             @empty
-                            <div class="p-6 text-center text-gray-500">
-                                <svg class="w-12 h-12 mx-auto mb-2 text-gray-300" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
+                            <div class="p-4 sm:p-6 text-center text-gray-500">
+                                <svg class="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-2 text-gray-300" fill="none"
+                                    stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M15 17h5l-1.405-1.405A2.032 2.032 0 0 1 18 14.158V11a6 6 0 1 0-12 0v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 1 1-6 0v-1m6 0H9">
                                     </path>
                                 </svg>
-                                <p class="text-sm">No new notifications</p>
+                                <p class="text-xs sm:text-sm">No new notifications</p>
                             </div>
                             @endforelse
                         </div>
 
                         <div class="p-2 border-t border-gray-200 text-center bg-gray-50 rounded-b-xl">
                             <a href="{{ route('notifications.index') }}"
-                                class="text-xs font-medium text-blue-900 hover:text-blue-700">
+                                class="text-[11px] sm:text-xs font-medium text-blue-900 hover:text-blue-700">
                                 View All Notifications
                             </a>
                         </div>
@@ -183,21 +208,21 @@
                 <!-- User Menu -->
                 <div class="relative">
                     <button id="userMenuButton"
-                        class="flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-gray-100 text-[12px]">
+                        class="flex items-center gap-1 px-1.5 sm:px-2 py-1 rounded-lg hover:bg-gray-100 text-[11px] sm:text-[12px]">
                         <div
-                            class="w-6 h-6 bg-blue-600 text-white flex items-center justify-center rounded-full font-bold text-[10px]">
+                            class="w-6 h-6 sm:w-7 sm:h-7 bg-blue-600 text-white flex items-center justify-center rounded-full font-bold text-[10px] sm:text-[11px]">
                             {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
                         </div>
-                        <span>{{ Auth::user()->name }}</span>
+                        <span class="hidden sm:inline max-w-[100px] truncate">{{ Auth::user()->name }}</span>
                     </button>
                     <div id="userDropdownMenu"
-                        class="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-md border hidden z-50">
+                        class="absolute right-0 mt-2 w-36 sm:w-40 bg-white rounded-md shadow-md border hidden z-50">
                         <a href="{{ route('settings.index') }}"
-                            class="w-full text-left flex items-center px-3 py-2 hover:bg-gray-100 text-[12px]">Settings</a>
+                            class="w-full text-left flex items-center px-3 py-2 hover:bg-gray-100 text-[11px] sm:text-[12px]">Settings</a>
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
                             <button type="submit"
-                                class="w-full text-left flex items-center px-3 py-2 text-red-500 hover:bg-gray-100 text-[12px]">Sign
+                                class="w-full text-left flex items-center px-3 py-2 text-red-500 hover:bg-gray-100 text-[11px] sm:text-[12px]">Sign
                                 out</button>
                         </form>
                     </div>
@@ -215,36 +240,69 @@
     </div>
 
     <!-- Settings Modal -->
-    <div id="settingsModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-        <div class="bg-white rounded-xl w-96 p-6 relative">
-            <h2 class="text-lg font-semibold mb-4">Settings</h2>
+    <div id="settingsModal"
+        class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-2 sm:p-4">
+        <div class="bg-white rounded-xl w-full max-w-sm sm:max-w-md md:w-96 p-4 sm:p-6 relative">
+            <h2 class="text-base sm:text-lg font-semibold mb-3 sm:mb-4">Settings</h2>
             <div>
-                <h3 class="font-medium mb-2">Select Wallpaper</h3>
-                <div class="grid grid-cols-3 gap-2">
+                <h3 class="text-sm sm:text-base font-medium mb-2">Select Wallpaper</h3>
+                <div class="grid grid-cols-3 gap-1.5 sm:gap-2">
                     @for ($i = 1; $i <= 9; $i++) <img src="{{ asset('images/'.$i.'.jpg') }}"
                         onclick="changeWallpaper('{{ asset('images/'.$i.'.jpg') }}')"
-                        class="w-full h-20 object-cover rounded cursor-pointer hover:ring-2 hover:ring-blue-500">
+                        class="w-full h-16 sm:h-20 object-cover rounded cursor-pointer hover:ring-2 hover:ring-blue-500">
                         @endfor
                 </div>
             </div>
-            <div class="mt-4">
-                <h3 class="font-medium mb-2">Other Settings</h3>
+            <div class="mt-3 sm:mt-4">
+                <h3 class="text-sm sm:text-base font-medium mb-2">Other Settings</h3>
                 <div class="space-y-2">
-                    <label class="flex items-center gap-2"><input type="checkbox" class="form-checkbox"> Enable
+                    <label class="flex items-center gap-2 text-xs sm:text-sm"><input type="checkbox"
+                            class="form-checkbox"> Enable
                         Notifications</label>
-                    <label class="flex items-center gap-2"><input type="checkbox" class="form-checkbox"> Dark
+                    <label class="flex items-center gap-2 text-xs sm:text-sm"><input type="checkbox"
+                            class="form-checkbox"> Dark
                         Mode</label>
-                    <label class="flex items-center gap-2"><input type="checkbox" class="form-checkbox"> Compact
+                    <label class="flex items-center gap-2 text-xs sm:text-sm"><input type="checkbox"
+                            class="form-checkbox"> Compact
                         Sidebar</label>
                 </div>
             </div>
             <button onclick="closeModal('settingsModal')"
-                class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Close</button>
+                class="mt-3 sm:mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm w-full sm:w-auto">Close</button>
         </div>
     </div>
 
     <!-- Scripts -->
     <script>
+        // Mobile Sidebar Toggle
+        const hamburgerBtn = document.getElementById('hamburger-btn');
+        const closeSidebarBtn = document.getElementById('close-sidebar-btn');
+        const sidebar = document.getElementById('sidebar');
+        const mobileOverlay = document.getElementById('mobile-overlay');
+
+        function openSidebar() {
+            sidebar.classList.remove('-translate-x-full');
+            mobileOverlay.classList.remove('hidden');
+        }
+
+        function closeSidebar() {
+            sidebar.classList.add('-translate-x-full');
+            mobileOverlay.classList.add('hidden');
+        }
+
+        if (hamburgerBtn) {
+            hamburgerBtn.addEventListener('click', openSidebar);
+        }
+
+        if (closeSidebarBtn) {
+            closeSidebarBtn.addEventListener('click', closeSidebar);
+        }
+
+        if (mobileOverlay) {
+            mobileOverlay.addEventListener('click', closeSidebar);
+        }
+
+        // Mark notification as read
         function markAsRead(event, notificationId) {
         // Send AJAX request to mark as read
         fetch(`/notifications/${notificationId}/mark-read`, {
@@ -319,8 +377,14 @@
         });
 
         document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && !userDropdownMenu.classList.contains('hidden')) {
-                userDropdownMenu.classList.add('hidden');
+            if (e.key === 'Escape') {
+                if (!userDropdownMenu.classList.contains('hidden')) {
+                    userDropdownMenu.classList.add('hidden');
+                }
+                // Close sidebar on mobile
+                if (sidebar && !sidebar.classList.contains('-translate-x-full')) {
+                    closeSidebar();
+                }
             }
         });
     }
