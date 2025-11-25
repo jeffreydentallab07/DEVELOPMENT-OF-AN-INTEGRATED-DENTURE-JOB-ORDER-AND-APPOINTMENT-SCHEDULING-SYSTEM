@@ -20,17 +20,19 @@
         </a>
     </div>
 
-   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-    <div class="bg-white rounded-lg shadow-md p-6 transform transition duration-300 hover:-translate-y-2 hover:shadow-xl">
-        <h3 class="text-gray-500 text-sm font-medium">Total Pending Approvals</h3>
-        <p class="text-3xl font-bold text-orange-600 mt-2">{{ $totalPending }}</p>
-    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div
+            class="bg-white rounded-lg shadow-md p-6 transform transition duration-300 hover:-translate-y-2 hover:shadow-xl">
+            <h3 class="text-gray-500 text-sm font-medium">Total Pending Approvals</h3>
+            <p class="text-3xl font-bold text-orange-600 mt-2">{{ $totalPending }}</p>
+        </div>
 
-    <div class="bg-white rounded-lg shadow-md p-6 transform transition duration-300 hover:-translate-y-2 hover:shadow-xl">
-        <h3 class="text-gray-500 text-sm font-medium">New Registrations (Last 7 Days)</h3>
-        <p class="text-3xl font-bold text-blue-600 mt-2">{{ $recentRegistrations }}</p>
+        <div
+            class="bg-white rounded-lg shadow-md p-6 transform transition duration-300 hover:-translate-y-2 hover:shadow-xl">
+            <h3 class="text-gray-500 text-sm font-medium">New Registrations (Last 7 Days)</h3>
+            <p class="text-3xl font-bold text-blue-600 mt-2">{{ $recentRegistrations }}</p>
+        </div>
     </div>
-</div>
 
 
     @if(session('success'))
@@ -62,14 +64,36 @@
                 @forelse($pendingClinics as $clinic)
                 <tr class="hover:bg-gray-50 border-b">
                     <td class="px-6 py-3">
-                        <img src="{{ $clinic->profile_photo ? asset('storage/' . $clinic->profile_photo) : asset('images/default-clinic.png') }}"
-                            alt="{{ $clinic->clinic_name }}"
+                        @if($clinic->profile_photo)
+                        <img src="{{ asset('storage/' . $clinic->profile_photo) }}" alt="{{ $clinic->clinic_name }}"
                             class="w-12 h-12 object-cover rounded-full border-2 border-orange-500">
+                        @else
+                        @php
+                        // Get initials from clinic name
+                        $words = explode(' ', $clinic->clinic_name);
+                        $initials = '';
+                        foreach(array_slice($words, 0, 2) as $word) {
+                        $initials .= strtoupper(substr($word, 0, 1));
+                        }
+
+                        // Generate a consistent color based on clinic name
+                        $colors = [
+                        'bg-blue-500', 'bg-green-500', 'bg-purple-500', 'bg-pink-500',
+                        'bg-indigo-500', 'bg-red-500', 'bg-yellow-500', 'bg-teal-500'
+                        ];
+                        $colorIndex = ord($clinic->clinic_name[0]) % count($colors);
+                        $bgColor = $colors[$colorIndex];
+                        @endphp
+                        <div
+                            class="w-12 h-12 rounded-full {{ $bgColor }} flex items-center justify-center text-white font-bold text-sm border-2 border-orange-500">
+                            {{ $initials }}
+                        </div>
+                        @endif
                     </td>
                     <td class="px-6 py-3">
                         <div>
                             <p class="font-semibold text-gray-800">{{ $clinic->clinic_name }}</p>
-                            <p class="text-xs text-gray-500">@{{ $clinic->username }}</p>
+                            <p class="text-xs text-gray-500">{{ '@' . $clinic->username }}</p>
                         </div>
                     </td>
                     <td class="px-6 py-3 text-gray-700">{{ $clinic->owner_name }}</td>
