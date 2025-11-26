@@ -274,7 +274,7 @@
                             <div>
                                 <label class="block text-xs sm:text-sm font-semibold text-gray-700 mb-2">Phone
                                     Number</label>
-                                <input type="text" name="phone" value="{{ Auth::user()->phone ?? '' }}"
+                                <input type="text" name="phone" value="{{ Auth::user()->contact_number ?? '' }}"
                                     placeholder="Enter phone number"
                                     class="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
                                 @error('phone')
@@ -306,8 +306,8 @@
                         </h3>
                         <div class="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
                             <div class="flex-shrink-0">
-                                @if(Auth::user()->photo)
-                                <img id="previewClinicPhoto" src="{{ asset('storage/' . Auth::user()->photo) }}"
+                                @if(Auth::user()->profile_photo)
+                                <img id="previewClinicPhoto" src="{{ asset('storage/' . Auth::user()->profile_photo) }}"
                                     alt="Profile"
                                     class="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover border-4 border-blue-100">
                                 @else

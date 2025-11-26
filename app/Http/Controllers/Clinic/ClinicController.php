@@ -63,35 +63,53 @@ class ClinicController extends Controller
     {
         $clinic = Auth::guard('clinic')->user();
 
+        // Validate with the form field names
         $validated = $request->validate([
             'clinic_name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:clinics,email,' . $clinic->clinic_id . ',clinic_id',
-            'contact_number' => 'nullable|string|max:20',
+            'phone' => 'nullable|string|max:20',
             'address' => 'nullable|string',
-            'password' => 'nullable|string|min:6|confirmed',
-            'profile_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'password' => 'nullable|string|min:8|confirmed',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+
+        // Prepare data for update
+        $updateData = [];
+
+        // Map clinic_name
+        if (isset($validated['clinic_name'])) {
+            $updateData['clinic_name'] = $validated['clinic_name'];
+        }
+
+        // Map phone to contact_number
+        if (isset($validated['phone'])) {
+            $updateData['contact_number'] = $validated['phone'];
+        }
+
+        // Map address
+        if (isset($validated['address'])) {
+            $updateData['address'] = $validated['address'];
+        }
 
         // Handle password update
         if (!empty($validated['password'])) {
-            $validated['password'] = Hash::make($validated['password']);
-        } else {
-            unset($validated['password']);
+            $updateData['password'] = Hash::make($validated['password']);
         }
 
         // Handle photo upload
-        if ($request->hasFile('profile_photo')) {
-            // Delete old photo
-            if ($clinic->profile_photo) {
+        if ($request->hasFile('photo')) {
+            // Delete old photo if exists
+            if ($clinic->profile_photo && Storage::disk('public')->exists($clinic->profile_photo)) {
                 Storage::disk('public')->delete($clinic->profile_photo);
             }
-            $validated['profile_photo'] = $request->file('profile_photo')
-                ->store('clinic_photos', 'public');
+
+            // Store new photo
+            $path = $request->file('photo')->store('clinic_photos', 'public');
+            $updateData['profile_photo'] = $path;
         }
 
-        $clinic->update($validated);
+        // Update the clinic
+        $clinic->update($updateData);
 
-        return redirect()->route('clinic.settings')
-            ->with('success', 'Settings updated successfully.');
+        return redirect()->back()->with('success', 'Settings updated successfully.');
     }
 }
